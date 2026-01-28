@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satwik Pamulaparthy - Data Analyst</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A0E27;
+            --accent: #00D9FF;
+            --accent-warm: #FF6B35;
+            --text: #E8EDF2;
+            --text-muted: #8B95A5;
+            --surface: #141930;
+            --surface-light: #1E2544;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .bg-animation canvas {
+            display: block;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 50px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 1s ease 0.3s backwards;
+        }
+
+        h1 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease 0.5s backwards;
+            color: #FFFFFF;
+        }
+
+        .gradient-text {
+            color: #FFFFFF;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.7s backwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.9s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 5rem 5%;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-number {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 320px;
+            height: 320px;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(255, 107, 53, 0.2));
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(0, 217, 255, 0.35);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 25%;
+            transform: scale(1.08);
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text strong {
+            color: var(--text);
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-icon svg {
+            width: 42px;
+            height: 42px;
+            fill: var(--accent);
+        }
+
+        .skill-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .skill-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .project-card:nth-child(even) {
+            direction: rtl;
+        }
+
+        .project-card:nth-child(even) .project-content {
+            direction: ltr;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 217, 255, 0.15);
+        }
+
+        .project-image {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(255, 107, 53, 0.2));
+            height: 100%;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        .project-image svg {
+            width: 96px;
+            height: 96px;
+            fill: var(--text);
+            opacity: 0.9;
+        }
+
+        .project-content {
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .project-label {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .project-card p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.4rem 1rem;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+
+        .project-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .project-link:hover {
+            gap: 1rem;
+        }
+
+        /* Experience Section */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-warm));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+            display: block;
+            text-decoration: none;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.5rem;
+            top: 2rem;
+            width: 1rem;
+            height: 1rem;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            border-color: var(--accent);
+        }
+
+        .timeline-item:hover h3,
+        .timeline-item:hover .timeline-company,
+        .timeline-item:hover p {
+            color: var(--text);
+        }
+
+        .timeline-date {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .timeline-company {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-item p {
+            color: var(--text-muted);
+        }
+
+        .timeline-item ul,
+        .publication-card ul {
+            margin-top: 0.5rem;
+            padding-left: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .timeline-item li,
+        .publication-card li {
+            margin-bottom: 0.6rem;
+        }
+
+        /* Publications */
+        .publication-card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .publication-meta {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item--location {
+            padding-left: 1.1rem;
+        }
+
+        .contact-item--location .contact-label {
+            margin-left: -4px;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent);
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .contact-item a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-link:hover {
+            color: var(--text);
+        }
+
+        .contact-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            line-height: 1;
+        }
+
+        .contact-label-icon {
+            width: 22px;
+            height: 22px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .contact-label-icon--email {
+            filter: invert(1);
+            opacity: 0.9;
+        }
+
+        .contact-label-icon--location {
+            filter: invert(1);
+            opacity: 0.9;
+            margin-left: -6px;
+        }
+
+        .contact-form {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            display: block;
+        }
+
+        .contact-form-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .form-status {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--accent);
+            min-height: 1.2rem;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-status.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--surface-light);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card:nth-child(even) {
+                direction: ltr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            section {
+                padding: 5rem 5%;
+            }
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+            z-index: 9999;
+            transform-origin: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <canvas id="bgCanvas"></canvas>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">SP</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-tag"> Data Analyst • MS Student @ UIC</div>
+            <h1>Hi, I'm <span class="gradient-text">Satwik Pamulaparthy</span></h1>
+            <p class="hero-description">
+                I enjoy making data speak by turning complex information into clear insights. 
+                I’m a Master’s student graduating in May 2026, actively looking for Data Analyst / Business Analyst roles.
+            </p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">
+            About Me
+        </h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>
+                    Hello! I’m Satwik, a Master’s student in Computer Science at the University of Illinois Chicago with a strong focus on data analytics. 
+                    I have a solid foundation in data analysis, visualization, and database systems, and I enjoy using data to drive meaningful insights.
+                </p>
+                <p>
+                    My journey in analytics is driven by curiosity and problem-solving. From cleaning and analyzing large datasets to building interactive dashboards, 
+                    I enjoy transforming raw data into clear, actionable insights, and I thrive in environments where data directly influences strategy.
+                </p>
+                <p>
+                    Beyond coding, I enjoy learning new tools, refining my technical skills, and collaborating with others to solve real-world problems. 
+                    I’m currently seeking Data Analyst opportunities where I can apply my analytical mindset, grow professionally, and contribute to teams that value data-informed thinking.
+                </p>
+            </div>
+            <div class="about-image">
+                <img src="sp.png" alt="Satwik Pamulaparthy">
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="section-title">
+            Technical Skills
+        </h2>
+        <div class="skills-container">
+            <div class="skill-card">
+                <div class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img">
+                        <path d="M4 19h16v2H2V3h2v16Zm4-8h2v6H8v-6Zm4-4h2v10h-2V7Zm4 3h2v7h-2v-7Z"/>
+                    </svg>
+                </div>
+                <h3>Programming & Query Languages</h3>
+                <ul class="skill-list">
+                    <li>Python (Pandas, NumPy, SciPy)</li>
+                    <li>SQL (MySQL, PostgreSQL)</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img">
+                        <path d="M4 19h16v2H2V3h2v16Zm2-3 4-4 3 3 6-7 1.5 1.3L13 18l-3-3-3 3-1-2Z"/>
+                    </svg>
+                </div>
+                <h3>Visualization Tools</h3>
+                <ul class="skill-list">
+                    <li>Tableau</li>
+                    <li>Power BI</li>
+                    <li>Matplotlib & Seaborn</li>
+                    <li>Plotly</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img">
+                        <path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4Zm0 2c3.87 0 6 .99 6 2s-2.13 2-6 2-6-.99-6-2 2.13-2 6-2Zm0 6c3.87 0 6 .99 6 2s-2.13 2-6 2-6-.99-6-2 2.13-2 6-2Zm0 6c3.87 0 6 .99 6 2s-2.13 2-6 2-6-.99-6-2 2.13-2 6-2Z"/>
+                    </svg>
+                </div>
+                <h3>Databases and Cloud</h3>
+                <ul class="skill-list">
+                    <li>MySQL</li>
+                    <li>SQLite</li>
+                    <li>Google BigQuery</li>
+                    <li>Amazon Web Services (AWS)</li>
+                    <li>Microsoft Azure</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img">
+                        <path d="M9 3h6v2h-2v2h3a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h3V5H9V3Zm-2 9h2v2H7v-2Zm8 0h2v2h-2v-2Z"/>
+                    </svg>
+                </div>
+                <h3>Machine Learning</h3>
+                <ul class="skill-list">
+                    <li>Scikit-learn</li>
+                    <li>Regression Models</li>
+                    <li>Classification</li>
+                    <li>Clustering</li>
+                    <li>Feature Engineering</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title">
+            Featured Projects
+        </h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-image" aria-label="GitHub logo">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+                        <path d="M12 .5C5.65.5.5 5.76.5 12.25c0 5.19 3.438 9.594 8.207 11.149.6.113.793-.266.793-.587 0-.29-.01-1.056-.016-2.074-3.338.746-4.042-1.65-4.042-1.65-.546-1.41-1.332-1.786-1.332-1.786-1.09-.763.083-.748.083-.748 1.205.086 1.84 1.267 1.84 1.267 1.072 1.875 2.812 1.334 3.497 1.02.108-.8.42-1.334.763-1.64-2.665-.313-5.467-1.366-5.467-6.08 0-1.344.465-2.442 1.234-3.303-.124-.313-.535-1.57.116-3.27 0 0 1.006-.33 3.3 1.26.96-.274 1.99-.41 3.014-.416 1.023.006 2.055.142 3.017.416 2.29-1.59 3.294-1.26 3.294-1.26.653 1.7.242 2.957.118 3.27.77.86 1.232 1.959 1.232 3.303 0 4.726-2.807 5.764-5.48 6.07.43.38.815 1.13.815 2.278 0 1.646-.015 2.97-.015 3.375 0 .324.19.705.8.586C20.07 21.84 23.5 17.44 23.5 12.25 23.5 5.76 18.35.5 12 .5z"/>
+                    </svg>
+                </div>
+                <div class="project-content">
+                    <div class="project-label">Statistical Analysis</div>
+                    <h3>AI Cost Optimization Analysis</h3>
+                    <p>
+                        Performed association rule mining on retail transaction data to identify product 
+                        relationships and optimize product placement, resulting in 12% increase in cross-selling.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">R</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">Apriori Algorithm</span>
+                        <span class="tag">Data Mining</span>
+                    </div>
+                    <a href="https://github.com/Satwik-Pamulaparthy/AI-Cost-Optimization-Analysis" class="project-link" target="_blank" rel="noopener">View Project →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image" aria-label="GitHub logo">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+                        <path d="M12 .5C5.65.5.5 5.76.5 12.25c0 5.19 3.438 9.594 8.207 11.149.6.113.793-.266.793-.587 0-.29-.01-1.056-.016-2.074-3.338.746-4.042-1.65-4.042-1.65-.546-1.41-1.332-1.786-1.332-1.786-1.09-.763.083-.748.083-.748 1.205.086 1.84 1.267 1.84 1.267 1.072 1.875 2.812 1.334 3.497 1.02.108-.8.42-1.334.763-1.64-2.665-.313-5.467-1.366-5.467-6.08 0-1.344.465-2.442 1.234-3.303-.124-.313-.535-1.57.116-3.27 0 0 1.006-.33 3.3 1.26.96-.274 1.99-.41 3.014-.416 1.023.006 2.055.142 3.017.416 2.29-1.59 3.294-1.26 3.294-1.26.653 1.7.242 2.957.118 3.27.77.86 1.232 1.959 1.232 3.303 0 4.726-2.807 5.764-5.48 6.07.43.38.815 1.13.815 2.278 0 1.646-.015 2.97-.015 3.375 0 .324.19.705.8.586C20.07 21.84 23.5 17.44 23.5 12.25 23.5 5.76 18.35.5 12 .5z"/>
+                    </svg>
+                </div>
+                <div class="project-content">
+                    <div class="project-label">Business Intelligence</div>
+                    <h3>Data-Analysis - Customer Behavior Analysis</h3>
+                    <p>
+                        Created an interactive dashboard to track key sales metrics across multiple regions. 
+                        Enabled real-time decision making and improved sales forecasting accuracy by 25%.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Tableau</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">Excel</span>
+                        <span class="tag">Power BI</span>
+                    </div>
+                    <a href="https://github.com/Satwik-Pamulaparthy/Data-Analysis---Customer-Behavior-Analysis" class="project-link" target="_blank" rel="noopener">View Project →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image" aria-label="GitHub logo">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+                        <path d="M12 .5C5.65.5.5 5.76.5 12.25c0 5.19 3.438 9.594 8.207 11.149.6.113.793-.266.793-.587 0-.29-.01-1.056-.016-2.074-3.338.746-4.042-1.65-4.042-1.65-.546-1.41-1.332-1.786-1.332-1.786-1.09-.763.083-.748.083-.748 1.205.086 1.84 1.267 1.84 1.267 1.072 1.875 2.812 1.334 3.497 1.02.108-.8.42-1.334.763-1.64-2.665-.313-5.467-1.366-5.467-6.08 0-1.344.465-2.442 1.234-3.303-.124-.313-.535-1.57.116-3.27 0 0 1.006-.33 3.3 1.26.96-.274 1.99-.41 3.014-.416 1.023.006 2.055.142 3.017.416 2.29-1.59 3.294-1.26 3.294-1.26.653 1.7.242 2.957.118 3.27.77.86 1.232 1.959 1.232 3.303 0 4.726-2.807 5.764-5.48 6.07.43.38.815 1.13.815 2.278 0 1.646-.015 2.97-.015 3.375 0 .324.19.705.8.586C20.07 21.84 23.5 17.44 23.5 12.25 23.5 5.76 18.35.5 12 .5z"/>
+                    </svg>
+                </div>
+                <div class="project-content">
+                    <div class="project-label">Data Analysis</div>
+                    <h3>Zomato Restaurant Data Analysis</h3>
+                    <p>
+                        Developed a predictive model to identify customers at risk of churning using machine learning 
+                        algorithms. Achieved 87% accuracy and helped reduce churn by 15%.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Scikit-learn</span>
+                        <span class="tag">Pandas</span>
+                        <span class="tag">Tableau</span>
+                    </div>
+                    <a href="https://github.com/Satwik-Pamulaparthy/Zomato-Restaurant-Data-Analysis" class="project-link" target="_blank" rel="noopener">View Project →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2 class="section-title">
+            Experience
+        </h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">Oct 2024 - Present</div>
+                <h3>Operations Analyst</h3>
+                <div class="timeline-company">Credit Union 1 (UIC)</div>
+                <ul>
+                    <li>Processed weekly timesheets for 40+ event staff using Excel (VLOOKUP and Pivot Tables) to ensure hours worked matched payroll records and resolved discrepancies.</li>
+                    <li>Used SQL queries on the venue’s Ticketmaster Archtics ticketing system to extract ticket data and analyze patterns across events, supporting operational efficiency.</li>
+                    <li>Updated the event tracking system by entering research information from old paper logs, improving access to past seating and access issues for the front-desk team.</li>
+                    <li>Created informational posters and digital signs using attendance data to improve crowd flow and client satisfaction.</li>
+                    <li>Built a searchable Excel system for event delivery records, streamlining access to administrative documents.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">04/2024 - 07/2024</div>
+                <h3>Software Engineer Intern</h3>
+                <div class="timeline-company">Clematis Software Technologies Private Limited, Hyderabad</div>
+                <ul>
+                    <li>Developed REST APIs in Python (Flask) to support cart tracking and order analytics, handling 10K+ product and cart events per day in a development and testing environment.</li>
+                    <li>Implemented asynchronous background tasks and basic caching using Celery and Redis to offload non-critical processing and improve API responsiveness.</li>
+                    <li>Refactored database schemas and added indexes on frequently queried columns to improve analytics query response times.</li>
+                    <li>Assisted with backend integration for internal dashboards by defining REST endpoints, validating JSON payloads, and testing API responses.</li>
+                    <li>Authored technical documentation (API routes, schema changes, validation rules) in Confluence for reproducible backend workflows.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="publications">
+        <h2 class="section-title">
+            Publications
+        </h2>
+        <div class="publication-card">
+            <div class="publication-meta">01/2025 - 04/2025 • University of Illinois at Chicago</div>
+            <h3>Exploring Bias in Clinical Notes using Open-Source LLM</h3>
+            <ul>
+                <li>Engineered a clinical bias detection framework using open-source LLMs (Llama-3.1-8B) to identify six categories of implicit and explicit bias in healthcare documentation.</li>
+                <li>Architected a Multi-Agent Debate (MAS) framework with Affirmative, Negative, and Moderator agents to resolve linguistic ambiguity and improve bias classification accuracy.</li>
+                <li>Developed prompting strategies (Self-Consistency, Self-Reflection) to raise document-level bias detection accuracy to 75% on MIMIC-IV and 68% on PMC-Patients.</li>
+                <li>Processed and chunked 500,000+ de-identified clinical notes from MIMIC-IV and PMC-Patients with high data integrity for annotation.</li>
+                <li>Benchmarked Multi-Agent systems and found Self-Reflection preserved 61.1% more accurate bias detections than complex reasoning baselines.</li>
+            </ul>
+            <div style="margin-top: 1.5rem;">
+                <a class="btn btn-primary" href="https://openreview.net/pdf?id=Bb0BtFHA7r" target="_blank" rel="noopener" download>Download Paper</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education">
+        <h2 class="section-title">
+            Education
+        </h2>
+        <div class="timeline">
+            <a class="timeline-item" href="https://uic.edu" target="_blank" rel="noopener">
+                <div class="timeline-date">2024 - 2026</div>
+                <h3>Master's in Computer Science</h3>
+                <div class="timeline-company">University of Illinois at Chicago</div>
+                <p>
+                    Completed a Master’s degree in Computer Science at the University of Illinois Chicago (UIC).
+                </p>
+            </a>
+
+            <a class="timeline-item" href="https://www.gitam.edu" target="_blank" rel="noopener">
+                <div class="timeline-date">2020 - 2024</div>
+                <h3>Bachelor's in Computer Science</h3>
+                <div class="timeline-company">Gandhi Institute of Technology and Management, Hyderabad</div>
+                <p>
+                    Completed a Bachelor’s degree in Computer Science with a specialization in Internet of Things (IoT).
+                </p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">
+            Get In Touch
+        </h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <p style="font-size: 1.2rem; color: var(--text); margin-bottom: 2rem;">
+                    I'm currently seeking <strong style="color: var(--text);">Data Analyst (New Grad) opportunities</strong> 
+                    starting Summer 2026.
+                </p>
+                
+                <div class="contact-item">
+                    <div>
+                        <div class="contact-label" style="color: var(--text-muted); font-size: 0.9rem;">
+                            <img class="contact-label-icon contact-label-icon--email" src="assets/icons/email.png" alt="">
+                            <a class="contact-link" href="mailto:vpamu@uic.edu">Email</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div>
+                        <div class="contact-label" style="color: var(--text-muted); font-size: 0.9rem;">
+                            <img class="contact-label-icon" src="assets/icons/linkedin.png" alt="">
+                            <a class="contact-link" href="https://linkedin.com/in/satwikpamulaparthy" target="_blank" rel="noopener">LinkedIn</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div>
+                        <div class="contact-label" style="color: var(--text-muted); font-size: 0.9rem;">
+                            <img class="contact-label-icon" src="assets/icons/github.png" alt="">
+                            <a class="contact-link" href="https://github.com/satwikpamulaparthy" target="_blank" rel="noopener">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item contact-item--location">
+                    <div class="contact-icon"></div>
+                    <div>
+                        <div class="contact-label" style="color: var(--text-muted); font-size: 0.9rem;">
+                            <img class="contact-label-icon contact-label-icon--location" src="assets/icons/location.png" alt="">
+                            <a class="contact-link" href="https://www.google.com/maps?q=Chicago,+IL" target="_blank" rel="noopener">Location</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <div class="contact-form-title">Whether you have a question or just want to connect, I’ll be happy to get back to you.</div>
+                <form id="contactForm" action="https://formspree.io/f/mwvojrew" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+                <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://linkedin.com/in/satwikpamulaparthy" target="_blank"></a>
+            <a href="https://github.com/satwikpamulaparthy" target="_blank"></a>
+            <a href="mailto:vpamu@uic.edu"></a>
+        </div>
+        <p style="color: var(--text-muted);">
+            © 2026 Designed and Built by Satwik Pamulaparthy.
+        </p>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('progressBar').style.width = scrollProgress + '%';
+        });
+
+        // Animated Background
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 50;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = '#00D9FF';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 217, 255, ${0.2 - distance / 500})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Contact form submit without redirect
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+
+        if (contactForm && formStatus) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                formStatus.textContent = '';
+                formStatus.classList.remove('is-visible');
+
+                const formData = new FormData(contactForm);
+
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        formStatus.textContent = 'Thank you, your message has been sent!';
+                        formStatus.classList.add('is-visible');
+                        contactForm.reset();
+                        setTimeout(() => {
+                            formStatus.classList.remove('is-visible');
+                        }, 2000);
+                    } else {
+                        formStatus.textContent = 'Sorry, something went wrong. Please try again.';
+                        formStatus.classList.add('is-visible');
+                    }
+                } catch (error) {
+                    formStatus.textContent = 'Sorry, something went wrong. Please try again.';
+                    formStatus.classList.add('is-visible');
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
