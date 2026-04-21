@@ -220,7 +220,7 @@
 
         #nnCanvas {
             display: block;
-            width: 540px; height: 540px;
+            width: 620px; height: 620px;
             cursor: grab;
         }
 
@@ -707,7 +707,7 @@
         @media (max-width: 768px) {
             .hero-inner { grid-template-columns: 1fr; }
             .hero-neural { display: flex; justify-content: center; margin-top: 2rem; }
-            #nnCanvas { width: 300px; height: 300px; }
+            #nnCanvas { width: 340px; height: 340px; }
             .hero-stats { gap: 1.5rem; }
             .about-grid { grid-template-columns: 1fr; }
             .about-photo { margin: 0 auto; }
@@ -769,7 +769,7 @@
                 </div>
             </div>
             <div class="hero-neural">
-                <canvas id="nnCanvas" width="540" height="540"></canvas>
+                <canvas id="nnCanvas" width="620" height="620"></canvas>
             </div>
         </div>
     </section>
@@ -1121,45 +1121,51 @@
     </footer>
 
     <script>
-        // 3D Interactive Neural Network
+        // 3D Interactive Double-Helix Neural Network
         (function () {
             const canvas = document.getElementById('nnCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            const W = 540, H = 540;
+            const W = 620, H = 620;
 
-            // 3D node layout: 4 layers, nodes spread in y/z
-            const layerXs = [-155, -52, 52, 155];
-            const layerShapes = [
-                [[0,-90,0],[0,0,90],[0,90,0],[0,-45,-75]],
-                [[0,-95,30],[0,-32,-88],[0,42,80],[0,88,-16],[0,0,0]],
-                [[0,-95,30],[0,-32,-88],[0,42,80],[0,88,-16],[0,0,0]],
-                [[0,-90,0],[0,0,90],[0,90,0],[0,-45,-75]],
-            ];
+            // Double helix setup
+            const N_PER = 24;       // nodes per strand
+            const TURNS = 4;        // spiral turns
+            const RADIUS = 115;     // helix radius
+            const VHEIGHT = 185;    // half-height of helix
 
             const nodes = [];
-            layerShapes.forEach((layer, li) => {
-                layer.forEach(([,y,z]) => {
-                    nodes.push({ x: layerXs[li], y, z, phase: Math.random() * Math.PI * 2 });
-                });
-            });
-
-            // Connections between adjacent layers
-            const conns = [];
-            let off = 0;
-            for (let l = 0; l < layerShapes.length - 1; l++) {
-                const nextOff = off + layerShapes[l].length;
-                for (let i = 0; i < layerShapes[l].length; i++) {
-                    for (let j = 0; j < layerShapes[l + 1].length; j++) {
-                        conns.push({
-                            from: off + i, to: nextOff + j,
-                            t: Math.random(),
-                            speed: 0.004 + Math.random() * 0.005,
-                            active: Math.random() > 0.5
-                        });
-                    }
+            for (let s = 0; s < 2; s++) {
+                const offset = s * Math.PI; // 180° phase offset for second strand
+                for (let i = 0; i < N_PER; i++) {
+                    const t = (i / (N_PER - 1)) * TURNS * Math.PI * 2 + offset;
+                    const y = -VHEIGHT + (i / (N_PER - 1)) * VHEIGHT * 2;
+                    nodes.push({
+                        x: RADIUS * Math.cos(t),
+                        y,
+                        z: RADIUS * Math.sin(t),
+                        strand: s,
+                        phase: Math.random() * Math.PI * 2
+                    });
                 }
-                off = nextOff;
+            }
+
+            const conns = [];
+            // Along each strand
+            for (let s = 0; s < 2; s++) {
+                const base = s * N_PER;
+                for (let i = 0; i < N_PER - 1; i++) {
+                    conns.push({ from: base + i, to: base + i + 1, t: Math.random(), speed: 0.005 + Math.random() * 0.005, active: Math.random() > 0.35 });
+                }
+            }
+            // Cross-rungs between strands (DNA-style)
+            for (let i = 0; i < N_PER; i++) {
+                conns.push({ from: i, to: N_PER + i, t: Math.random(), speed: 0.004 + Math.random() * 0.004, active: Math.random() > 0.5 });
+            }
+            // Diagonal cross-connections for neural feel
+            for (let i = 0; i < N_PER - 1; i++) {
+                if (i % 3 === 0) conns.push({ from: i, to: N_PER + i + 1, t: Math.random(), speed: 0.003 + Math.random() * 0.005, active: Math.random() > 0.65 });
+                if (i % 4 === 0) conns.push({ from: N_PER + i, to: i + 1, t: Math.random(), speed: 0.003 + Math.random() * 0.005, active: Math.random() > 0.65 });
             }
 
             let rotX = 0.25, rotY = 0.4;
@@ -1206,8 +1212,8 @@
                 const cx = Math.cos(rotX), sx = Math.sin(rotX);
                 const y1 = y * cx - z1 * sx, z2 = y * sx + z1 * cx;
                 // Perspective
-                const fov = 380;
-                const s = fov / (fov + z2 + 120);
+                const fov = 460;
+                const s = fov / (fov + z2 + 140);
                 return { sx: W / 2 + x1 * s, sy: H / 2 + y1 * s, s, depth: z2 };
             }
 
