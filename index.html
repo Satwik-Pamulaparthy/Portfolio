@@ -11,18 +11,20 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #060A1A;
-            --surface: #0E1428;
-            --surface-2: #151E38;
-            --glass: rgba(14, 20, 40, 0.55);
-            --border: rgba(0, 217, 255, 0.12);
-            --border-h: rgba(0, 217, 255, 0.38);
-            --accent: #00D9FF;
-            --warm: #FF6B35;
-            --accent-dim: rgba(0, 217, 255, 0.12);
-            --text: #EEF2F7;
-            --muted: #7D8FA3;
-            --subtle: #3D4F66;
+            --bg: #F7F4EF;
+            --cream: #EEE9E0;
+            --white: #FFFFFF;
+            --surface: rgba(255,255,255,0.75);
+            --surface-2: #F0EBE3;
+            --border: rgba(0,0,0,0.07);
+            --border-h: rgba(99,88,235,0.3);
+            --accent: #6358EB;
+            --warm: #E8622A;
+            --accent-dim: rgba(99,88,235,0.08);
+            --text: #1A1630;
+            --muted: #6B6880;
+            --subtle: #B0A9BE;
+            --shadow: rgba(26,22,48,0.07);
             --r: 16px;
             --rl: 22px;
         }
@@ -48,8 +50,9 @@
         .bg {
             position: fixed; inset: 0; z-index: -1;
             background:
-                radial-gradient(ellipse 80% 55% at 15% 8%, rgba(0,217,255,.07) 0%, transparent 60%),
-                radial-gradient(ellipse 55% 45% at 85% 85%, rgba(255,107,53,.05) 0%, transparent 55%),
+                radial-gradient(ellipse 75% 55% at 10% 5%, rgba(99,88,235,.07) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 50% at 90% 90%, rgba(232,98,42,.06) 0%, transparent 55%),
+                radial-gradient(ellipse 40% 40% at 50% 50%, rgba(255,255,255,.5) 0%, transparent 70%),
                 var(--bg);
         }
 
@@ -58,7 +61,7 @@
             position: fixed; top: 0; width: 100%; z-index: 1000;
             padding: 1.1rem 5%;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(6,10,26,.8);
+            background: rgba(247,244,239,.88);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
@@ -81,7 +84,8 @@
 
         .nav-list a::after {
             content: ''; position: absolute; bottom: -4px; left: 0;
-            width: 0; height: 2px; background: var(--accent);
+            width: 0; height: 2px;
+            background: var(--accent);
             transition: width .3s;
         }
 
@@ -114,7 +118,7 @@
             display: inline-flex; align-items: center; gap: .5rem;
             padding: .4rem 1rem;
             background: var(--accent-dim);
-            border: 1px solid var(--accent); border-radius: 50px;
+            border: 1px solid rgba(99,88,235,.25); border-radius: 50px;
             color: var(--accent); font-size: .82rem; font-weight: 600;
             margin-bottom: 1.75rem;
             animation: up .8s ease .2s backwards;
@@ -128,7 +132,7 @@
 
         @keyframes blink {
             0%,100% { opacity:1; transform:scale(1); }
-            50% { opacity:.4; transform:scale(.7); }
+            50% { opacity:.35; transform:scale(.7); }
         }
 
         .hero h1 {
@@ -140,7 +144,7 @@
         }
 
         .hero h1 .name {
-            background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--warm) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, #9B59E8 50%, var(--warm) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
@@ -178,27 +182,28 @@
             animation: up .8s ease .75s backwards;
         }
 
-        /* Photo */
-        .hero-photo-wrap {
-            animation: fadeIn 1s ease .5s backwards;
-        }
+        /* Photo ring */
+        .hero-photo-wrap { animation: fadeIn 1s ease .5s backwards; }
 
-        .ring {
-            position: relative; width: 270px; height: 270px;
-        }
+        .ring { position: relative; width: 270px; height: 270px; }
 
         .ring::before {
             content: ''; position: absolute; inset: -3px;
             border-radius: 50%;
-            background: conic-gradient(var(--accent), var(--warm), var(--accent));
+            background: conic-gradient(var(--accent), var(--warm), #9B59E8, var(--accent));
             animation: spin 8s linear infinite;
         }
 
+        .ring::after {
+            content: ''; position: absolute; inset: 3px;
+            border-radius: 50%; background: var(--bg); z-index: 0;
+        }
+
         .ring img {
-            position: absolute; inset: 3px;
-            width: calc(100% - 6px); height: calc(100% - 6px);
+            position: absolute; inset: 6px;
+            width: calc(100% - 12px); height: calc(100% - 12px);
             border-radius: 50%; object-fit: cover; object-position: center 25%;
-            z-index: 1; background: var(--surface);
+            z-index: 1;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -214,17 +219,23 @@
             transition: all .25s ease;
         }
 
-        .btn-primary { background: var(--accent); color: var(--bg); }
+        .btn-primary {
+            background: var(--accent); color: #fff;
+        }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(0,217,255,.35);
-            background: #22E2FF;
+            box-shadow: 0 12px 28px rgba(99,88,235,.3);
+            background: #5248D4;
         }
 
-        .btn-outline { border-color: var(--border-h); color: var(--text); }
-        .btn-outline:hover {
-            border-color: var(--accent); color: var(--accent);
+        .btn-outline {
+            border-color: rgba(99,88,235,.3); color: var(--accent);
             background: var(--accent-dim);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: rgba(99,88,235,.14);
+            transform: translateY(-2px);
         }
 
         /* ── Sections ── */
@@ -251,24 +262,10 @@
             color: var(--text); margin-bottom: 3rem;
         }
 
-        /* ── Glass card ── */
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: var(--rl);
-            transition: border-color .3s, transform .3s, box-shadow .3s;
-        }
-
-        .card:hover {
-            border-color: var(--border-h);
-            box-shadow: 0 8px 40px rgba(0,217,255,.1);
-        }
-
         /* ── Divider ── */
         .div {
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            background: linear-gradient(90deg, transparent, rgba(99,88,235,.15), transparent);
             margin: 0 5%;
         }
 
@@ -280,8 +277,9 @@
 
         .about-photo {
             width: 280px; height: 280px; border-radius: var(--rl);
-            overflow: hidden; border: 1px solid var(--border);
-            background: linear-gradient(135deg, rgba(0,217,255,.1), rgba(255,107,53,.1));
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px var(--shadow);
         }
 
         .about-photo img {
@@ -303,17 +301,17 @@
 
         .skill-card {
             padding: 1.6rem;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--rl);
+            box-shadow: 0 2px 12px var(--shadow);
             transition: border-color .3s, transform .3s, box-shadow .3s;
         }
 
         .skill-card:hover {
-            border-color: var(--border-h);
+            border-color: rgba(99,88,235,.25);
             transform: translateY(-4px);
-            box-shadow: 0 12px 36px rgba(0,217,255,.1);
+            box-shadow: 0 12px 36px rgba(99,88,235,.1);
         }
 
         .sk-icon {
@@ -336,14 +334,14 @@
         .pill {
             padding: .25rem .65rem; border-radius: 50px;
             font-size: .76rem; font-weight: 500;
-            background: rgba(0,217,255,.07);
-            border: 1px solid rgba(0,217,255,.18);
+            background: var(--cream);
+            border: 1px solid rgba(0,0,0,.07);
             color: var(--muted); transition: all .2s;
         }
 
         .pill:hover {
             background: var(--accent-dim);
-            border-color: var(--accent); color: var(--accent);
+            border-color: rgba(99,88,235,.3); color: var(--accent);
         }
 
         /* ── Projects Bento ── */
@@ -354,19 +352,19 @@
         }
 
         .proj {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--rl);
             overflow: hidden;
             display: flex; flex-direction: column;
+            box-shadow: 0 2px 12px var(--shadow);
             transition: border-color .3s, transform .3s, box-shadow .3s;
         }
 
         .proj:hover {
-            border-color: var(--border-h);
+            border-color: rgba(99,88,235,.25);
             transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0,217,255,.12);
+            box-shadow: 0 20px 50px rgba(99,88,235,.1);
         }
 
         .proj.featured {
@@ -375,7 +373,7 @@
         }
 
         .proj-vis {
-            background: linear-gradient(135deg, rgba(0,217,255,.15), rgba(255,107,53,.1));
+            background: linear-gradient(135deg, rgba(99,88,235,.1), rgba(232,98,42,.08));
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden; min-height: 160px;
         }
@@ -383,11 +381,11 @@
         .proj-vis::after {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(0,217,255,.18) 0%, transparent 65%);
+            background: radial-gradient(circle at 50% 50%, rgba(99,88,235,.12) 0%, transparent 65%);
         }
 
         .proj-vis svg {
-            width: 64px; height: 64px; fill: var(--accent); opacity: .75;
+            width: 64px; height: 64px; fill: var(--accent); opacity: .6;
             position: relative; z-index: 1;
         }
 
@@ -421,8 +419,8 @@
         .metric {
             display: inline-flex; align-items: center; gap: .35rem;
             padding: .25rem .7rem;
-            background: rgba(255,107,53,.1);
-            border: 1px solid rgba(255,107,53,.3);
+            background: rgba(232,98,42,.08);
+            border: 1px solid rgba(232,98,42,.25);
             border-radius: 50px; margin-bottom: .85rem;
             font-size: .82rem; font-weight: 700; color: var(--warm);
         }
@@ -431,8 +429,8 @@
 
         .tag {
             padding: .2rem .6rem;
-            background: rgba(0,217,255,.07);
-            border: 1px solid rgba(0,217,255,.18);
+            background: var(--cream);
+            border: 1px solid var(--border);
             border-radius: 50px; font-size: .75rem; color: var(--muted);
         }
 
@@ -451,16 +449,16 @@
         .timeline::before {
             content: ''; position: absolute; left: 0; top: 8px;
             width: 2px; height: calc(100% - 16px);
-            background: linear-gradient(180deg, var(--accent), rgba(255,107,53,.35));
+            background: linear-gradient(180deg, var(--accent), rgba(232,98,42,.35));
         }
 
         .tl {
             position: relative; margin-bottom: 1.5rem;
             padding: 1.6rem 1.75rem;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--rl);
+            box-shadow: 0 2px 12px var(--shadow);
             transition: border-color .3s, transform .3s, box-shadow .3s;
             text-decoration: none; display: block; color: inherit;
         }
@@ -471,13 +469,13 @@
             width: 10px; height: 10px;
             background: var(--accent); border-radius: 50%;
             border: 2px solid var(--bg);
-            box-shadow: 0 0 0 4px rgba(0,217,255,.2);
+            box-shadow: 0 0 0 4px rgba(99,88,235,.18);
         }
 
         .tl:hover {
-            border-color: var(--border-h);
+            border-color: rgba(99,88,235,.25);
             transform: translateX(6px);
-            box-shadow: 0 8px 28px rgba(0,217,255,.1);
+            box-shadow: 0 8px 28px rgba(99,88,235,.1);
         }
 
         .tl-date {
@@ -507,14 +505,17 @@
         /* ── Publication ── */
         .pub {
             padding: 2.25rem;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--rl);
-            transition: border-color .3s;
+            box-shadow: 0 2px 12px var(--shadow);
+            transition: border-color .3s, box-shadow .3s;
         }
 
-        .pub:hover { border-color: var(--border-h); }
+        .pub:hover {
+            border-color: rgba(99,88,235,.25);
+            box-shadow: 0 8px 32px rgba(99,88,235,.1);
+        }
 
         .pub-meta {
             font-size: .75rem; font-weight: 700; color: var(--accent);
@@ -551,18 +552,19 @@
         .clink {
             display: flex; align-items: center; gap: .9rem;
             padding: .9rem 1.1rem;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--r);
+            box-shadow: 0 1px 6px var(--shadow);
             text-decoration: none; color: var(--muted);
             font-weight: 500; font-size: .88rem;
             transition: all .25s;
         }
 
         .clink:hover {
-            border-color: var(--border-h); color: var(--text);
+            border-color: rgba(99,88,235,.25); color: var(--text);
             transform: translateX(4px);
+            box-shadow: 0 4px 16px rgba(99,88,235,.1);
         }
 
         .clink-icon {
@@ -576,10 +578,10 @@
 
         .form-wrap {
             padding: 2.25rem;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--rl);
+            box-shadow: 0 2px 12px var(--shadow);
         }
 
         .form-wrap h3 {
@@ -598,7 +600,7 @@
         input, textarea {
             width: 100%; padding: .8rem .95rem;
             background: var(--surface-2);
-            border: 1px solid rgba(0,217,255,.14);
+            border: 1px solid rgba(0,0,0,.09);
             border-radius: 10px; color: var(--text);
             font-family: 'DM Sans', sans-serif; font-size: .88rem;
             transition: border-color .2s, box-shadow .2s;
@@ -606,7 +608,7 @@
 
         input:focus, textarea:focus {
             outline: none; border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0,217,255,.1);
+            box-shadow: 0 0 0 3px rgba(99,88,235,.1);
         }
 
         input::placeholder, textarea::placeholder { color: var(--subtle); }
@@ -625,6 +627,7 @@
         footer {
             padding: 2.5rem 5%; text-align: center;
             border-top: 1px solid var(--border);
+            background: var(--white);
         }
 
         .fsocials {
@@ -634,7 +637,7 @@
 
         .fsocials a {
             width: 42px; height: 42px; border-radius: 50%;
-            background: var(--glass); backdrop-filter: blur(12px);
+            background: var(--cream);
             border: 1px solid var(--border);
             display: flex; align-items: center; justify-content: center;
             color: var(--muted); text-decoration: none;
@@ -642,9 +645,10 @@
         }
 
         .fsocials a:hover {
-            border-color: var(--accent); color: var(--accent);
+            border-color: rgba(99,88,235,.3); color: var(--accent);
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,217,255,.2);
+            box-shadow: 0 8px 20px rgba(99,88,235,.15);
+            background: var(--accent-dim);
         }
 
         .fsocials svg { width: 17px; height: 17px; fill: currentColor; }
@@ -676,10 +680,10 @@
             .contact-grid { grid-template-columns: 1fr; }
             .nav-list {
                 display: none; position: absolute; top: 100%; right: 5%;
-                background: rgba(6,10,26,.97); backdrop-filter: blur(20px);
+                background: rgba(247,244,239,.97); backdrop-filter: blur(20px);
                 border: 1px solid var(--border); border-radius: 14px;
                 padding: 1rem 1.25rem; flex-direction: column; gap: .7rem;
-                min-width: 175px;
+                min-width: 175px; box-shadow: 0 12px 32px var(--shadow);
             }
             .nav-list.open { display: flex; }
             .nav-toggle { display: flex; align-items: center; justify-content: center; }
@@ -986,7 +990,7 @@
                     <div class="clinks">
                         <a class="clink" href="mailto:vpamu@uic.edu">
                             <div class="clink-icon">
-                                <img src="assets/icons/email.png" alt="" style="filter:invert(1);opacity:.85;">
+                                <img src="assets/icons/email.png" alt="" style="filter:invert(30%) sepia(80%) saturate(500%) hue-rotate(210deg);opacity:.85;">
                             </div>
                             vpamu@uic.edu
                         </a>
@@ -998,13 +1002,13 @@
                         </a>
                         <a class="clink" href="https://github.com/satwik-pamulaparthy" target="_blank" rel="noopener">
                             <div class="clink-icon">
-                                <img src="assets/icons/github.png" alt="" style="filter:invert(1);opacity:.85;">
+                                <img src="assets/icons/github.png" alt="" style="filter:invert(30%) sepia(80%) saturate(500%) hue-rotate(210deg);opacity:.85;">
                             </div>
                             github.com/satwik-pamulaparthy
                         </a>
                         <div class="clink" style="cursor:default;">
                             <div class="clink-icon">
-                                <img src="assets/icons/location.png" alt="" style="filter:invert(1);opacity:.85;">
+                                <img src="assets/icons/location.png" alt="" style="filter:invert(30%) sepia(80%) saturate(500%) hue-rotate(210deg);opacity:.85;">
                             </div>
                             Chicago, IL
                         </div>
