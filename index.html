@@ -733,9 +733,7 @@
         .section.in .skill-card:nth-child(4) { animation: fadeUp .5s ease .61s both; }
 
         /* Projects */
-        .section.in .proj:nth-child(1) { animation: fadeUp .6s ease .2s  both; }
-        .section.in .proj:nth-child(2) { animation: fadeUp .6s ease .38s both; }
-        .section.in .proj:nth-child(3) { animation: fadeUp .6s ease .54s both; }
+        .section.in .cube-carousel { animation: fadeUp .6s ease .25s both; }
 
         /* Timeline (experience & education) */
         .section.in .tl:nth-child(1) { animation: fadeUp .5s ease .28s both; }
@@ -747,6 +745,111 @@
         /* Contact */
         .section.in .contact-lead  { animation: fadeRight .55s ease .2s  both; }
         .section.in .form-wrap     { animation: fadeLeft  .55s ease .35s both; }
+
+        /* ── Cube Carousel ── */
+        .cube-carousel {
+            position: relative;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .cube-viewport {
+            perspective: 1100px;
+            overflow: hidden;
+            border-radius: var(--rl);
+            box-shadow: 0 8px 40px rgba(28,25,23,0.12), 0 24px 64px rgba(67,56,202,0.11);
+        }
+
+        .cube-track {
+            position: relative;
+            height: 300px;
+            transform-style: preserve-3d;
+        }
+
+        .cube-slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            opacity: 0;
+            pointer-events: none;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--rl);
+        }
+
+        .cube-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .cube-slide.out-left  { animation: cubeOutLeft  .45s cubic-bezier(.4,0,.2,1) forwards; }
+        .cube-slide.in-right  { animation: cubeInRight  .45s cubic-bezier(.4,0,.2,1) forwards; }
+        .cube-slide.out-right { animation: cubeOutRight .45s cubic-bezier(.4,0,.2,1) forwards; }
+        .cube-slide.in-left   { animation: cubeInLeft   .45s cubic-bezier(.4,0,.2,1) forwards; }
+
+        @keyframes cubeInRight  { from { transform: rotateY(90deg); opacity:0; } to { transform: rotateY(0); opacity:1; } }
+        @keyframes cubeOutLeft  { from { transform: rotateY(0); opacity:1; } to { transform: rotateY(-90deg); opacity:0; } }
+        @keyframes cubeInLeft   { from { transform: rotateY(-90deg); opacity:0; } to { transform: rotateY(0); opacity:1; } }
+        @keyframes cubeOutRight { from { transform: rotateY(0); opacity:1; } to { transform: rotateY(90deg); opacity:0; } }
+
+        .cube-vis {
+            width: 230px; min-width: 230px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: var(--rl) 0 0 var(--rl);
+            overflow: hidden; flex-shrink: 0;
+        }
+
+        .cube-body {
+            padding: 2rem 2.25rem;
+            display: flex; flex-direction: column;
+            flex: 1; justify-content: center; overflow: auto;
+        }
+
+        .cube-body .proj-cat { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: .45rem; }
+
+        .cube-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem; font-weight: 600;
+            color: var(--text-head); margin-bottom: .55rem; line-height: 1.3;
+        }
+
+        .cube-body p { color: var(--muted); font-size: .88rem; line-height: 1.7; margin-bottom: .85rem; }
+
+        .cube-nav {
+            display: flex; align-items: center;
+            justify-content: center; gap: 1.25rem;
+            margin-top: 1.4rem;
+        }
+
+        .cube-btn {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 12px var(--shadow);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all .25s; color: var(--muted);
+        }
+
+        .cube-btn:hover {
+            border-color: rgba(99,88,235,.3); color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99,88,235,.12);
+        }
+
+        .cube-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+        .cube-dots { display: flex; gap: .5rem; align-items: center; }
+
+        .cube-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--subtle); border: none; padding: 0;
+            cursor: pointer; transition: all .25s;
+        }
+
+        .cube-dot.active {
+            background: var(--accent); transform: scale(1.3);
+            box-shadow: 0 0 0 3px rgba(67,56,202,.2);
+        }
 
         /* ── Responsive ── */
         @media (max-width: 1024px) {
@@ -760,10 +863,10 @@
             .hero-stats { gap: 1.5rem; }
             .about-grid { grid-template-columns: 1fr; }
             .about-photo { margin: 0 auto; }
-            .bento { grid-template-columns: 1fr; }
-            .proj.featured { flex-direction: column; }
-            .proj.featured .proj-vis { width: 100%; min-width: unset; min-height: 160px; }
             .contact-grid { grid-template-columns: 1fr; }
+            .cube-track { height: auto; min-height: 460px; }
+            .cube-slide { flex-direction: column; }
+            .cube-vis { width: 100%; min-width: unset; height: 160px; border-radius: var(--rl) var(--rl) 0 0; }
             .nav-list {
                 display: none; position: absolute; top: 100%; right: 5%;
                 background: rgba(247,244,239,.97); backdrop-filter: blur(20px);
@@ -836,8 +939,8 @@
                 </div>
                 <div class="about-text">
                     <p>Hello! I'm Satwik, a Master's student in Computer Science at the University of Illinois Chicago with a strong focus on data analytics. I have a solid foundation in data analysis, visualization, and database systems, and I enjoy using data to drive meaningful insights.</p>
-                    <p>My journey in analytics is driven by curiosity and problem-solving. From cleaning and analyzing large datasets to building interactive dashboards, I enjoy transforming raw data into <strong>clear, actionable insights</strong> — and I thrive in environments where data directly influences strategy.</p>
-                    <p>I'm currently seeking <strong>Data Analyst opportunities</strong> where I can apply my analytical mindset, grow professionally, and contribute to teams that value data-informed thinking.</p>
+                    <p>My journey in analytics is driven by curiosity and problem-solving. From cleaning and analyzing large datasets to building interactive dashboards, I enjoy transforming raw data into clear, actionable insights — and I thrive in environments where data directly influences strategy.</p>
+                    <p>I'm currently seeking Data Analyst opportunities where I can apply my analytical mindset, grow professionally, and contribute to teams that value data-informed thinking.</p>
                 </div>
             </div>
         </div>
@@ -907,96 +1010,111 @@
         <div class="section-inner">
             <div class="section-label">What I've Built</div>
             <h2 class="section-title">Featured Projects</h2>
-            <div class="bento">
+            <div class="cube-carousel">
+                <div class="cube-viewport">
+                    <div class="cube-track" id="cubeTrack">
 
-                <!-- Featured -->
-                <div class="proj featured">
-                    <div class="proj-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
-                        <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
-                            <circle cx="36" cy="36" r="30" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-                            <rect x="20" y="20" width="32" height="32" rx="5" stroke="rgba(255,255,255,0.8)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
-                            <line x1="27" y1="20" x2="27" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="36" y1="20" x2="36" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="45" y1="20" x2="45" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="27" y1="52" x2="27" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="36" y1="52" x2="36" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="45" y1="52" x2="45" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="20" y1="27" x2="13" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="20" y1="36" x2="13" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="20" y1="45" x2="13" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="52" y1="27" x2="59" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="52" y1="36" x2="59" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="52" y1="45" x2="59" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                            <rect x="28" y="28" width="16" height="16" rx="3" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                            <path d="M36 31v.8M36 40.2v.8M34 33c0-1 .9-2 2-2s2 .9 2 2c0 2.2-4 1.8-4 4s1.8 2.2 4 2.2" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div style="flex:1;display:flex;flex-direction:column;">
-                        <div class="proj-body">
-                            <div class="proj-cat">Statistical Analysis · Featured</div>
-                            <h3>AI Cost Optimization Analysis</h3>
-                            <div class="metric">💰 $37,000 in annual savings identified</div>
-                            <p>Data analysis project identifying $37K in annual AI infrastructure cost savings through statistical analysis and business intelligence techniques on cloud spending data.</p>
-                            <div class="tags">
-                                <span class="tag">Python</span><span class="tag">Pandas</span>
-                                <span class="tag">NumPy</span><span class="tag">SQL</span>
-                                <span class="tag">Data Mining</span>
+                        <!-- Slide 1: AI Cost Optimization -->
+                        <div class="cube-slide active" data-index="0">
+                            <div class="cube-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
+                                <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
+                                    <circle cx="36" cy="36" r="30" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                                    <rect x="20" y="20" width="32" height="32" rx="5" stroke="rgba(255,255,255,0.8)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
+                                    <line x1="27" y1="20" x2="27" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="36" y1="20" x2="36" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="45" y1="20" x2="45" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="27" y1="52" x2="27" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="36" y1="52" x2="36" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="45" y1="52" x2="45" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="20" y1="27" x2="13" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="20" y1="36" x2="13" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="20" y1="45" x2="13" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="52" y1="27" x2="59" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="52" y1="36" x2="59" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="52" y1="45" x2="59" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                    <rect x="28" y="28" width="16" height="16" rx="3" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                    <path d="M36 31v.8M36 40.2v.8M34 33c0-1 .9-2 2-2s2 .9 2 2c0 2.2-4 1.8-4 4s1.8 2.2 4 2.2" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
+                                </svg>
                             </div>
-                            <a href="https://github.com/Satwik-Pamulaparthy/AI-Cost-Optimization-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
+                            <div class="cube-body">
+                                <div class="proj-cat">Statistical Analysis · Featured</div>
+                                <h3>AI Cost Optimization Analysis</h3>
+                                <div class="metric">💰 $37,000 in annual savings identified</div>
+                                <p>Data analysis project identifying $37K in annual AI infrastructure cost savings through statistical analysis and business intelligence techniques on cloud spending data.</p>
+                                <div class="tags">
+                                    <span class="tag">Python</span><span class="tag">Pandas</span>
+                                    <span class="tag">NumPy</span><span class="tag">SQL</span>
+                                    <span class="tag">Data Mining</span>
+                                </div>
+                                <a href="https://github.com/Satwik-Pamulaparthy/AI-Cost-Optimization-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
+                            </div>
                         </div>
+
+                        <!-- Slide 2: Customer Behavior -->
+                        <div class="cube-slide" data-index="1">
+                            <div class="cube-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
+                                <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
+                                    <circle cx="36" cy="36" r="28" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                                    <path d="M21 30h30l-4 26H25L21 30z" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="rgba(255,255,255,0.1)" stroke-linejoin="round"/>
+                                    <path d="M28 30c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                                    <rect x="27" y="46" width="5" height="7" rx="1.5" fill="rgba(255,255,255,0.45)"/>
+                                    <rect x="34" y="41" width="5" height="12" rx="1.5" fill="rgba(255,255,255,0.65)"/>
+                                    <rect x="41" y="37" width="5" height="16" rx="1.5" fill="rgba(255,255,255,0.9)"/>
+                                </svg>
+                            </div>
+                            <div class="cube-body">
+                                <div class="proj-cat">Business Intelligence</div>
+                                <h3>Customer Behavior Analysis</h3>
+                                <p>End-to-end analysis using Python, SQL, and Power BI to identify purchasing trends, customer segments, and key drivers of repeat purchases with interactive dashboards.</p>
+                                <div class="tags">
+                                    <span class="tag">SQL</span><span class="tag">Excel</span><span class="tag">Power BI</span>
+                                </div>
+                                <a href="https://github.com/Satwik-Pamulaparthy/Data-Analysis---Customer-Behavior-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3: Zomato -->
+                        <div class="cube-slide" data-index="2">
+                            <div class="cube-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
+                                <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
+                                    <circle cx="36" cy="40" r="22" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+                                    <circle cx="36" cy="40" r="16" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                                    <line x1="25" y1="13" x2="25" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
+                                    <line x1="21" y1="13" x2="21" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
+                                    <line x1="29" y1="13" x2="29" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
+                                    <path d="M21 24 Q25 29 29 24" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                    <line x1="47" y1="13" x2="47" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M47 13 Q56 22 56 31 L47 35" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" fill="rgba(255,255,255,0.08)" stroke-linejoin="round"/>
+                                    <path d="M36 31l1.8 5.5h5.8l-4.7 3.4 1.8 5.5L36 42l-4.7 3.4 1.8-5.5-4.7-3.4h5.8z" fill="rgba(255,255,255,0.88)"/>
+                                </svg>
+                            </div>
+                            <div class="cube-body">
+                                <div class="proj-cat">Data Analysis</div>
+                                <h3>Zomato Restaurant Analysis</h3>
+                                <p>Uncovered patterns in restaurant distribution, ratings, costs, and user preferences across thousands of listings using ML clustering and Tableau visualizations.</p>
+                                <div class="tags">
+                                    <span class="tag">Python</span><span class="tag">Scikit-learn</span>
+                                    <span class="tag">Pandas</span><span class="tag">Tableau</span>
+                                </div>
+                                <a href="https://github.com/Satwik-Pamulaparthy/Zomato-Restaurant-Data-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-                <!-- Customer Behavior -->
-                <div class="proj">
-                    <div class="proj-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
-                        <svg viewBox="0 0 72 72" width="82" height="82" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
-                            <circle cx="36" cy="36" r="28" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-                            <path d="M21 30h30l-4 26H25L21 30z" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="rgba(255,255,255,0.1)" stroke-linejoin="round"/>
-                            <path d="M28 30c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-                            <rect x="27" y="46" width="5" height="7" rx="1.5" fill="rgba(255,255,255,0.45)"/>
-                            <rect x="34" y="41" width="5" height="12" rx="1.5" fill="rgba(255,255,255,0.65)"/>
-                            <rect x="41" y="37" width="5" height="16" rx="1.5" fill="rgba(255,255,255,0.9)"/>
-                        </svg>
+                <div class="cube-nav">
+                    <button class="cube-btn" id="cubePrev" aria-label="Previous project">
+                        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <div class="cube-dots">
+                        <button class="cube-dot active" data-idx="0" aria-label="Project 1"></button>
+                        <button class="cube-dot" data-idx="1" aria-label="Project 2"></button>
+                        <button class="cube-dot" data-idx="2" aria-label="Project 3"></button>
                     </div>
-                    <div class="proj-body">
-                        <div class="proj-cat">Business Intelligence</div>
-                        <h3>Customer Behavior Analysis</h3>
-                        <p>End-to-end analysis using Python, SQL, and Power BI to identify purchasing trends, customer segments, and key drivers of repeat purchases with interactive dashboards.</p>
-                        <div class="tags">
-                            <span class="tag">SQL</span><span class="tag">Excel</span><span class="tag">Power BI</span>
-                        </div>
-                        <a href="https://github.com/Satwik-Pamulaparthy/Data-Analysis---Customer-Behavior-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
-                    </div>
+                    <button class="cube-btn" id="cubeNext" aria-label="Next project">
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
                 </div>
-
-                <!-- Zomato -->
-                <div class="proj">
-                    <div class="proj-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
-                        <svg viewBox="0 0 72 72" width="82" height="82" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
-                            <circle cx="36" cy="40" r="22" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
-                            <circle cx="36" cy="40" r="16" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-                            <line x1="25" y1="13" x2="25" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
-                            <line x1="21" y1="13" x2="21" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
-                            <line x1="29" y1="13" x2="29" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
-                            <path d="M21 24 Q25 29 29 24" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-                            <line x1="47" y1="13" x2="47" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
-                            <path d="M47 13 Q56 22 56 31 L47 35" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" fill="rgba(255,255,255,0.08)" stroke-linejoin="round"/>
-                            <path d="M36 31l1.8 5.5h5.8l-4.7 3.4 1.8 5.5L36 42l-4.7 3.4 1.8-5.5-4.7-3.4h5.8z" fill="rgba(255,255,255,0.88)"/>
-                        </svg>
-                    </div>
-                    <div class="proj-body">
-                        <div class="proj-cat">Data Analysis</div>
-                        <h3>Zomato Restaurant Analysis</h3>
-                        <p>Uncovered patterns in restaurant distribution, ratings, costs, and user preferences across thousands of listings using ML clustering and Tableau visualizations.</p>
-                        <div class="tags">
-                            <span class="tag">Python</span><span class="tag">Scikit-learn</span>
-                            <span class="tag">Pandas</span><span class="tag">Tableau</span>
-                        </div>
-                        <a href="https://github.com/Satwik-Pamulaparthy/Zomato-Restaurant-Data-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
@@ -1393,6 +1511,64 @@
                 if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
+
+        // Cube Carousel
+        (function () {
+            const track = document.getElementById('cubeTrack');
+            if (!track) return;
+            const slides = Array.from(track.querySelectorAll('.cube-slide'));
+            const dots   = Array.from(document.querySelectorAll('.cube-dot'));
+            let current  = 0;
+            let animating = false;
+
+            function goTo(next, dir) {
+                if (animating || next === current) return;
+                animating = true;
+                const cur = slides[current];
+                const nxt = slides[next];
+                const outCls = dir > 0 ? 'out-left'  : 'out-right';
+                const inCls  = dir > 0 ? 'in-right'  : 'in-left';
+
+                nxt.style.opacity = '1';
+                nxt.style.pointerEvents = 'auto';
+                cur.classList.add(outCls);
+                nxt.classList.add(inCls);
+
+                cur.addEventListener('animationend', function handler() {
+                    cur.removeEventListener('animationend', handler);
+                    cur.classList.remove('active', outCls);
+                    cur.style.opacity = '';
+                    cur.style.pointerEvents = '';
+                    nxt.classList.remove(inCls);
+                    nxt.classList.add('active');
+                    dots[current].classList.remove('active');
+                    current = next;
+                    dots[current].classList.add('active');
+                    animating = false;
+                });
+            }
+
+            document.getElementById('cubeNext').addEventListener('click', () => {
+                goTo((current + 1) % slides.length, 1);
+            });
+            document.getElementById('cubePrev').addEventListener('click', () => {
+                goTo((current - 1 + slides.length) % slides.length, -1);
+            });
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const idx = parseInt(dot.dataset.idx, 10);
+                    goTo(idx, idx > current ? 1 : -1);
+                });
+            });
+
+            // Swipe support
+            let touchStartX = 0;
+            track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 40) goTo(dx < 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length, dx < 0 ? 1 : -1);
+            }, { passive: true });
+        })();
 
         // Contact form
         const form = document.getElementById('contactForm');
