@@ -220,7 +220,7 @@
 
         #nnCanvas {
             display: block;
-            width: 420px; height: 420px;
+            width: 540px; height: 540px;
             cursor: grab;
         }
 
@@ -779,7 +779,7 @@
                 </div>
             </div>
             <div class="hero-neural">
-                <canvas id="nnCanvas" width="420" height="420"></canvas>
+                <canvas id="nnCanvas" width="540" height="540"></canvas>
             </div>
         </div>
     </section>
@@ -1092,15 +1092,15 @@
             const canvas = document.getElementById('nnCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            const W = 420, H = 420;
+            const W = 540, H = 540;
 
             // 3D node layout: 4 layers, nodes spread in y/z
-            const layerXs = [-120, -40, 40, 120];
+            const layerXs = [-155, -52, 52, 155];
             const layerShapes = [
-                [[0,-70,0],[0,0,70],[0,70,0],[0,-35,-58]],
-                [[0,-75,25],[0,-25,-68],[0,32,62],[0,68,-12],[0,0,0]],
-                [[0,-75,25],[0,-25,-68],[0,32,62],[0,68,-12],[0,0,0]],
-                [[0,-70,0],[0,0,70],[0,70,0],[0,-35,-58]],
+                [[0,-90,0],[0,0,90],[0,90,0],[0,-45,-75]],
+                [[0,-95,30],[0,-32,-88],[0,42,80],[0,88,-16],[0,0,0]],
+                [[0,-95,30],[0,-32,-88],[0,42,80],[0,88,-16],[0,0,0]],
+                [[0,-90,0],[0,0,90],[0,90,0],[0,-45,-75]],
             ];
 
             const nodes = [];
