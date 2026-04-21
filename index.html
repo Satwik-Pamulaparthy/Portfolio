@@ -729,8 +729,8 @@
         .section.in .skill-card:nth-child(3) { animation: fadeUp .5s ease .49s both; }
         .section.in .skill-card:nth-child(4) { animation: fadeUp .5s ease .61s both; }
 
-        /* Projects & Skills cubes */
-        .section.in .cube3d-outer { animation: fadeUp .6s ease .25s both; }
+        /* Projects & Skills orbit */
+        .section.in .orbit-wrap { animation: fadeUp .6s ease .25s both; }
 
         /* Timeline (experience & education) */
         .section.in .tl:nth-child(1) { animation: fadeUp .5s ease .28s both; }
@@ -743,70 +743,71 @@
         .section.in .contact-lead  { animation: fadeRight .55s ease .2s  both; }
         .section.in .form-wrap     { animation: fadeLeft  .55s ease .35s both; }
 
-        /* ── 3-D Cube Carousel ── */
-        .cube3d-outer {
-            position: relative;
-            max-width: 860px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: var(--rl);
-            box-shadow: 0 8px 40px rgba(28,25,23,0.12), 0 24px 64px rgba(67,56,202,0.10);
+        /* ── Orbit Carousel ── */
+        .orbit-wrap { position: relative; max-width: 1100px; margin: 0 auto; }
+
+        .orbit-scene {
+            position: relative; height: 420px;
+            overflow: hidden; user-select: none;
         }
 
-        .cube3d-scene { perspective: 1200px; perspective-origin: 50% 50%; }
+        .skills-orbit .orbit-scene { height: 340px; }
 
-        .cube3d-inner {
-            position: relative;
-            height: 300px;
-            transform-style: preserve-3d;
-            transition: transform .65s cubic-bezier(.45,.05,.55,.95);
-            will-change: transform;
-        }
-
-        .cube3d-inner.no-anim { transition: none !important; }
-
-        .cube3d-face {
+        .orbit-card {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            backface-visibility: hidden;
+            width: 290px; height: 380px;
+            left: 50%; top: 50%;
+            margin-left: -145px; margin-top: -190px;
+            border-radius: var(--rl);
             background: var(--white);
             border: 1px solid var(--border);
-            display: flex;
             overflow: hidden;
-        }
-
-        /* ── face panels ── */
-        .cube-vis {
-            width: 220px; min-width: 220px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; overflow: hidden;
-        }
-
-        .cube-body {
-            padding: 2rem 2.25rem;
             display: flex; flex-direction: column;
-            flex: 1; justify-content: center;
+            cursor: grab; will-change: transform, opacity, filter;
+            box-shadow: 0 4px 20px rgba(28,25,23,0.09);
         }
 
-        .cube-body .proj-cat { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: .45rem; }
+        .orbit-card:active { cursor: grabbing; }
 
-        .cube-body h3 {
+        .skills-orbit .orbit-card { height: 300px; margin-top: -150px; }
+
+        .orbit-vis {
+            height: 148px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .skills-orbit .orbit-vis { height: 116px; }
+
+        .orbit-body {
+            padding: 1.2rem 1.5rem;
+            display: flex; flex-direction: column; flex: 1;
+        }
+
+        .orbit-cat {
+            font-size: .68rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: .08em; color: var(--accent); margin-bottom: .3rem;
+        }
+
+        .orbit-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.45rem; font-weight: 600;
-            color: var(--text-head); margin-bottom: .55rem; line-height: 1.3;
+            font-size: 1.1rem; font-weight: 600;
+            color: var(--text-head); margin-bottom: .45rem; line-height: 1.3;
         }
 
-        .cube-body p { color: var(--muted); font-size: .88rem; line-height: 1.7; margin-bottom: .85rem; }
+        .orbit-desc {
+            color: var(--muted); font-size: .8rem; line-height: 1.65;
+            margin-bottom: .6rem; flex: 1;
+            display: -webkit-box; -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
 
         /* ── Shared nav ── */
-        .cube-nav {
+        .orbit-nav {
             display: flex; align-items: center;
-            justify-content: center; gap: 1.25rem;
-            margin-top: 1.4rem;
+            justify-content: center; gap: 1.25rem; margin-top: 1.4rem;
         }
 
-        .cube-btn {
+        .orbit-btn {
             width: 44px; height: 44px; border-radius: 50%;
             background: var(--white); border: 1px solid var(--border);
             box-shadow: 0 2px 12px var(--shadow);
@@ -814,23 +815,22 @@
             cursor: pointer; transition: all .25s; color: var(--muted);
         }
 
-        .cube-btn:hover {
+        .orbit-btn:hover {
             border-color: rgba(99,88,235,.3); color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(99,88,235,.12);
+            transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99,88,235,.12);
         }
 
-        .cube-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .orbit-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
-        .cube-dots { display: flex; gap: .5rem; align-items: center; }
+        .orbit-dots { display: flex; gap: .5rem; align-items: center; }
 
-        .cube-dot {
+        .orbit-dot {
             width: 8px; height: 8px; border-radius: 50%;
             background: var(--subtle); border: none; padding: 0;
             cursor: pointer; transition: all .25s;
         }
 
-        .cube-dot.active {
+        .orbit-dot.active {
             background: var(--accent); transform: scale(1.3);
             box-shadow: 0 0 0 3px rgba(67,56,202,.2);
         }
@@ -844,11 +844,9 @@
             .about-grid { grid-template-columns: 1fr; }
             .about-photo { margin: 0 auto; }
             .contact-grid { grid-template-columns: 1fr; }
-            /* cube: switch to column layout, taller inner */
-            #projCube  .cube3d-inner { height: 480px; }
-            #skillsCube .cube3d-inner { height: 320px; }
-            .cube3d-face { flex-direction: column; }
-            .cube-vis { width: 100%; min-width: unset; height: 160px; }
+            .orbit-scene { height: 380px; }
+            .skills-orbit .orbit-scene { height: 320px; }
+            .orbit-card { width: 250px; margin-left: -125px; }
             .nav-list {
                 display: none; position: absolute; top: 100%; right: 5%;
                 background: rgba(247,244,239,.97); backdrop-filter: blur(20px);
@@ -934,125 +932,123 @@
         <div class="section-inner">
             <div class="section-label">What I Know</div>
             <h2 class="section-title">Technical Skills</h2>
-            <div class="cube3d-outer" id="skillsCube">
-                <div class="cube3d-scene">
-                    <div class="cube3d-inner">
+            <div class="orbit-wrap skills-orbit" id="skillsOrbit">
+                <div class="orbit-scene">
 
-                        <!-- Skill 1: Programming & Query -->
-                        <div class="cube3d-face">
-                            <div class="cube-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
-                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
-                                    <rect x="12" y="14" width="48" height="44" rx="6" stroke="rgba(255,255,255,0.7)" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
-                                    <line x1="12" y1="26" x2="60" y2="26" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                    <circle cx="20" cy="20" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                                    <circle cx="28" cy="20" r="2.5" fill="rgba(255,255,255,0.35)"/>
-                                    <circle cx="36" cy="20" r="2.5" fill="rgba(255,255,255,0.2)"/>
-                                    <path d="M22 36l-6 5 6 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                    <path d="M32 34l8 7-8 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                    <line x1="28" y1="35" x2="36" y2="49" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <div class="cube-body">
-                                <div class="proj-cat">Category 1</div>
-                                <h3>Programming & Query</h3>
-                                <div class="pills">
-                                    <span class="pill">Python</span><span class="pill">Pandas</span>
-                                    <span class="pill">NumPy</span><span class="pill">SciPy</span>
-                                    <span class="pill">SQL</span><span class="pill">MySQL</span>
-                                    <span class="pill">PostgreSQL</span>
-                                </div>
+                    <!-- Card 1: Programming & Query -->
+                    <div class="orbit-card">
+                        <div class="orbit-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
+                            <svg viewBox="0 0 72 72" width="72" height="72" fill="none" aria-hidden="true">
+                                <rect x="12" y="14" width="48" height="44" rx="6" stroke="rgba(255,255,255,0.7)" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
+                                <line x1="12" y1="26" x2="60" y2="26" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                <circle cx="20" cy="20" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                                <circle cx="28" cy="20" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                                <circle cx="36" cy="20" r="2.5" fill="rgba(255,255,255,0.2)"/>
+                                <path d="M22 36l-6 5 6 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                <path d="M32 34l8 7-8 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                <line x1="28" y1="35" x2="36" y2="49" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="orbit-body">
+                            <div class="orbit-cat">Category 1</div>
+                            <div class="orbit-title">Programming &amp; Query</div>
+                            <div class="orbit-desc">Core data engineering stack for analysis, wrangling, and querying structured datasets at scale.</div>
+                            <div class="pills">
+                                <span class="pill">Python</span><span class="pill">Pandas</span>
+                                <span class="pill">NumPy</span><span class="pill">SQL</span>
+                                <span class="pill">MySQL</span><span class="pill">PostgreSQL</span>
                             </div>
                         </div>
-
-                        <!-- Skill 2: Visualization -->
-                        <div class="cube3d-face">
-                            <div class="cube-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
-                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
-                                    <rect x="10" y="10" width="52" height="52" rx="6" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-                                    <polyline points="14,52 26,36 35,43 47,24 58,32" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                    <circle cx="26" cy="36" r="3" fill="white" opacity="0.85"/>
-                                    <circle cx="35" cy="43" r="3" fill="white" opacity="0.85"/>
-                                    <circle cx="47" cy="24" r="3" fill="white" opacity="0.85"/>
-                                    <line x1="14" y1="58" x2="58" y2="58" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-                                    <line x1="14" y1="14" x2="14" y2="58" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <div class="cube-body">
-                                <div class="proj-cat">Category 2</div>
-                                <h3>Visualization</h3>
-                                <div class="pills">
-                                    <span class="pill">Tableau</span><span class="pill">Power BI</span>
-                                    <span class="pill">Matplotlib</span><span class="pill">Seaborn</span>
-                                    <span class="pill">Plotly</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Skill 3: Databases & Cloud -->
-                        <div class="cube3d-face">
-                            <div class="cube-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
-                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
-                                    <ellipse cx="36" cy="22" rx="20" ry="8" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
-                                    <path d="M16 22v12c0 4.4 9 8 20 8s20-3.6 20-8V22" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="none"/>
-                                    <path d="M16 34v12c0 4.4 9 8 20 8s20-3.6 20-8V34" stroke="rgba(255,255,255,0.6)" stroke-width="2" fill="none"/>
-                                    <line x1="36" y1="54" x2="36" y2="62" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
-                                    <circle cx="44" cy="60" r="5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="rgba(255,255,255,0.1)"/>
-                                    <path d="M41.5 60h5M44 57.5v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <div class="cube-body">
-                                <div class="proj-cat">Category 3</div>
-                                <h3>Databases & Cloud</h3>
-                                <div class="pills">
-                                    <span class="pill">MySQL</span><span class="pill">SQLite</span>
-                                    <span class="pill">BigQuery</span><span class="pill">AWS</span>
-                                    <span class="pill">Azure</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Skill 4: Machine Learning -->
-                        <div class="cube3d-face">
-                            <div class="cube-vis" style="background: linear-gradient(145deg, #5b21b6 0%, #7c3aed 100%);">
-                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
-                                    <circle cx="36" cy="36" r="12" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
-                                    <circle cx="36" cy="36" r="4" fill="rgba(255,255,255,0.9)"/>
-                                    <circle cx="14" cy="20" r="4" fill="rgba(255,255,255,0.65)"/>
-                                    <circle cx="58" cy="20" r="4" fill="rgba(255,255,255,0.65)"/>
-                                    <circle cx="14" cy="52" r="4" fill="rgba(255,255,255,0.65)"/>
-                                    <circle cx="58" cy="52" r="4" fill="rgba(255,255,255,0.65)"/>
-                                    <circle cx="36" cy="10" r="4" fill="rgba(255,255,255,0.5)"/>
-                                    <circle cx="36" cy="62" r="4" fill="rgba(255,255,255,0.5)"/>
-                                    <line x1="14" y1="20" x2="26" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                    <line x1="58" y1="20" x2="46" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                    <line x1="14" y1="52" x2="26" y2="43" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                    <line x1="58" y1="52" x2="46" y2="43" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                    <line x1="36" y1="10" x2="36" y2="24" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                    <line x1="36" y1="48" x2="36" y2="62" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                </svg>
-                            </div>
-                            <div class="cube-body">
-                                <div class="proj-cat">Category 4</div>
-                                <h3>Machine Learning</h3>
-                                <div class="pills">
-                                    <span class="pill">Scikit-learn</span><span class="pill">Regression</span>
-                                    <span class="pill">Classification</span><span class="pill">Clustering</span>
-                                    <span class="pill">Feature Eng.</span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
+
+                    <!-- Card 2: Visualization -->
+                    <div class="orbit-card">
+                        <div class="orbit-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
+                            <svg viewBox="0 0 72 72" width="72" height="72" fill="none" aria-hidden="true">
+                                <rect x="10" y="10" width="52" height="52" rx="6" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                                <polyline points="14,52 26,36 35,43 47,24 58,32" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                <circle cx="26" cy="36" r="3" fill="white" opacity="0.85"/>
+                                <circle cx="35" cy="43" r="3" fill="white" opacity="0.85"/>
+                                <circle cx="47" cy="24" r="3" fill="white" opacity="0.85"/>
+                                <line x1="14" y1="58" x2="58" y2="58" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                                <line x1="14" y1="14" x2="14" y2="58" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="orbit-body">
+                            <div class="orbit-cat">Category 2</div>
+                            <div class="orbit-title">Visualization</div>
+                            <div class="orbit-desc">Translating complex data into compelling, interactive charts and dashboards for stakeholders.</div>
+                            <div class="pills">
+                                <span class="pill">Tableau</span><span class="pill">Power BI</span>
+                                <span class="pill">Matplotlib</span><span class="pill">Seaborn</span>
+                                <span class="pill">Plotly</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Databases & Cloud -->
+                    <div class="orbit-card">
+                        <div class="orbit-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
+                            <svg viewBox="0 0 72 72" width="72" height="72" fill="none" aria-hidden="true">
+                                <ellipse cx="36" cy="22" rx="20" ry="8" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
+                                <path d="M16 22v12c0 4.4 9 8 20 8s20-3.6 20-8V22" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="none"/>
+                                <path d="M16 34v12c0 4.4 9 8 20 8s20-3.6 20-8V34" stroke="rgba(255,255,255,0.6)" stroke-width="2" fill="none"/>
+                                <line x1="36" y1="54" x2="36" y2="62" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+                                <circle cx="44" cy="60" r="5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="rgba(255,255,255,0.1)"/>
+                                <path d="M41.5 60h5M44 57.5v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="orbit-body">
+                            <div class="orbit-cat">Category 3</div>
+                            <div class="orbit-title">Databases &amp; Cloud</div>
+                            <div class="orbit-desc">Designing and querying relational databases; deploying and managing data pipelines in the cloud.</div>
+                            <div class="pills">
+                                <span class="pill">MySQL</span><span class="pill">SQLite</span>
+                                <span class="pill">BigQuery</span><span class="pill">AWS</span>
+                                <span class="pill">Azure</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Machine Learning -->
+                    <div class="orbit-card">
+                        <div class="orbit-vis" style="background: linear-gradient(145deg, #5b21b6 0%, #7c3aed 100%);">
+                            <svg viewBox="0 0 72 72" width="72" height="72" fill="none" aria-hidden="true">
+                                <circle cx="36" cy="36" r="12" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
+                                <circle cx="36" cy="36" r="4" fill="rgba(255,255,255,0.9)"/>
+                                <circle cx="14" cy="20" r="4" fill="rgba(255,255,255,0.65)"/>
+                                <circle cx="58" cy="20" r="4" fill="rgba(255,255,255,0.65)"/>
+                                <circle cx="14" cy="52" r="4" fill="rgba(255,255,255,0.65)"/>
+                                <circle cx="58" cy="52" r="4" fill="rgba(255,255,255,0.65)"/>
+                                <line x1="14" y1="20" x2="26" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                <line x1="58" y1="20" x2="46" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                <line x1="14" y1="52" x2="26" y2="43" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                <line x1="58" y1="52" x2="46" y2="43" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                <line x1="36" y1="10" x2="36" y2="24" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                <line x1="36" y1="48" x2="36" y2="62" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="orbit-body">
+                            <div class="orbit-cat">Category 4</div>
+                            <div class="orbit-title">Machine Learning</div>
+                            <div class="orbit-desc">Building predictive models with regression, classification, and clustering; feature engineering pipelines.</div>
+                            <div class="pills">
+                                <span class="pill">Scikit-learn</span><span class="pill">Regression</span>
+                                <span class="pill">Classification</span><span class="pill">Clustering</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="cube-nav">
-                    <button class="cube-btn cube-prev" aria-label="Previous skill"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-                    <div class="cube-dots">
-                        <button class="cube-dot active" aria-label="Skill 1"></button>
-                        <button class="cube-dot" aria-label="Skill 2"></button>
-                        <button class="cube-dot" aria-label="Skill 3"></button>
-                        <button class="cube-dot" aria-label="Skill 4"></button>
+                <div class="orbit-nav">
+                    <button class="orbit-btn orbit-prev" aria-label="Previous skill"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+                    <div class="orbit-dots">
+                        <button class="orbit-dot active" aria-label="Skill 1"></button>
+                        <button class="orbit-dot" aria-label="Skill 2"></button>
+                        <button class="orbit-dot" aria-label="Skill 3"></button>
+                        <button class="orbit-dot" aria-label="Skill 4"></button>
                     </div>
-                    <button class="cube-btn cube-next" aria-label="Next skill"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+                    <button class="orbit-btn orbit-next" aria-label="Next skill"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
                 </div>
             </div>
         </div>
@@ -1065,106 +1061,102 @@
         <div class="section-inner">
             <div class="section-label">What I've Built</div>
             <h2 class="section-title">Featured Projects</h2>
-            <div class="cube3d-outer" id="projCube">
-                <div class="cube3d-scene">
-                    <div class="cube3d-inner" id="projInner">
+            <div class="orbit-wrap" id="projOrbit">
+                <div class="orbit-scene">
 
-                        <!-- Face 1: AI Cost Optimization -->
-                        <div class="cube3d-face">
-                            <div class="cube-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
-                                <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
-                                    <circle cx="36" cy="36" r="30" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-                                    <rect x="20" y="20" width="32" height="32" rx="5" stroke="rgba(255,255,255,0.8)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
-                                    <line x1="27" y1="20" x2="27" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="36" y1="20" x2="36" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="45" y1="20" x2="45" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="27" y1="52" x2="27" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="36" y1="52" x2="36" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="45" y1="52" x2="45" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="20" y1="27" x2="13" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="20" y1="36" x2="13" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="20" y1="45" x2="13" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="52" y1="27" x2="59" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="52" y1="36" x2="59" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="52" y1="45" x2="59" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
-                                    <rect x="28" y="28" width="16" height="16" rx="3" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                                    <path d="M36 31v.8M36 40.2v.8M34 33c0-1 .9-2 2-2s2 .9 2 2c0 2.2-4 1.8-4 4s1.8 2.2 4 2.2" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <div class="cube-body">
-                                <div class="proj-cat">Statistical Analysis · Featured</div>
-                                <h3>AI Cost Optimization Analysis</h3>
-                                <div class="metric">💰 $37,000 in annual savings identified</div>
-                                <p>Data analysis project identifying $37K in annual AI infrastructure cost savings through statistical analysis and business intelligence techniques on cloud spending data.</p>
-                                <div class="tags">
-                                    <span class="tag">Python</span><span class="tag">Pandas</span>
-                                    <span class="tag">NumPy</span><span class="tag">SQL</span>
-                                    <span class="tag">Data Mining</span>
-                                </div>
-                                <a href="https://github.com/Satwik-Pamulaparthy/AI-Cost-Optimization-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
-                            </div>
+                    <!-- Card 1: AI Cost Optimization -->
+                    <div class="orbit-card">
+                        <div class="orbit-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
+                            <svg viewBox="0 0 72 72" width="88" height="88" fill="none" aria-hidden="true">
+                                <circle cx="36" cy="36" r="30" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                                <rect x="20" y="20" width="32" height="32" rx="5" stroke="rgba(255,255,255,0.8)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
+                                <line x1="27" y1="20" x2="27" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="36" y1="20" x2="36" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="45" y1="20" x2="45" y2="13" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="27" y1="52" x2="27" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="36" y1="52" x2="36" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="45" y1="52" x2="45" y2="59" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="20" y1="27" x2="13" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="20" y1="36" x2="13" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="20" y1="45" x2="13" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="52" y1="27" x2="59" y2="27" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="52" y1="36" x2="59" y2="36" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="52" y1="45" x2="59" y2="45" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+                                <rect x="28" y="28" width="16" height="16" rx="3" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                <path d="M36 31v.8M36 40.2v.8M34 33c0-1 .9-2 2-2s2 .9 2 2c0 2.2-4 1.8-4 4s1.8 2.2 4 2.2" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
+                            </svg>
                         </div>
-
-                        <!-- Face 2: Customer Behavior -->
-                        <div class="cube3d-face">
-                            <div class="cube-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
-                                <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
-                                    <circle cx="36" cy="36" r="28" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-                                    <path d="M21 30h30l-4 26H25L21 30z" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="rgba(255,255,255,0.1)" stroke-linejoin="round"/>
-                                    <path d="M28 30c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-                                    <rect x="27" y="46" width="5" height="7" rx="1.5" fill="rgba(255,255,255,0.45)"/>
-                                    <rect x="34" y="41" width="5" height="12" rx="1.5" fill="rgba(255,255,255,0.65)"/>
-                                    <rect x="41" y="37" width="5" height="16" rx="1.5" fill="rgba(255,255,255,0.9)"/>
-                                </svg>
+                        <div class="orbit-body">
+                            <div class="orbit-cat">Statistical Analysis · Featured</div>
+                            <div class="orbit-title">AI Cost Optimization Analysis</div>
+                            <div class="orbit-desc">Identified $37K in annual AI infrastructure savings through statistical analysis and BI techniques on cloud spending data.</div>
+                            <div class="tags">
+                                <span class="tag">Python</span><span class="tag">Pandas</span>
+                                <span class="tag">NumPy</span><span class="tag">SQL</span>
                             </div>
-                            <div class="cube-body">
-                                <div class="proj-cat">Business Intelligence</div>
-                                <h3>Customer Behavior Analysis</h3>
-                                <p>End-to-end analysis using Python, SQL, and Power BI to identify purchasing trends, customer segments, and key drivers of repeat purchases with interactive dashboards.</p>
-                                <div class="tags">
-                                    <span class="tag">SQL</span><span class="tag">Excel</span><span class="tag">Power BI</span>
-                                </div>
-                                <a href="https://github.com/Satwik-Pamulaparthy/Data-Analysis---Customer-Behavior-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
-                            </div>
+                            <a href="https://github.com/Satwik-Pamulaparthy/AI-Cost-Optimization-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
                         </div>
-
-                        <!-- Face 3: Zomato -->
-                        <div class="cube3d-face">
-                            <div class="cube-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
-                                <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
-                                    <circle cx="36" cy="40" r="22" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
-                                    <circle cx="36" cy="40" r="16" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-                                    <line x1="25" y1="13" x2="25" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
-                                    <line x1="21" y1="13" x2="21" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
-                                    <line x1="29" y1="13" x2="29" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M21 24 Q25 29 29 24" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-                                    <line x1="47" y1="13" x2="47" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
-                                    <path d="M47 13 Q56 22 56 31 L47 35" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" fill="rgba(255,255,255,0.08)" stroke-linejoin="round"/>
-                                    <path d="M36 31l1.8 5.5h5.8l-4.7 3.4 1.8 5.5L36 42l-4.7 3.4 1.8-5.5-4.7-3.4h5.8z" fill="rgba(255,255,255,0.88)"/>
-                                </svg>
-                            </div>
-                            <div class="cube-body">
-                                <div class="proj-cat">Data Analysis</div>
-                                <h3>Zomato Restaurant Analysis</h3>
-                                <p>Uncovered patterns in restaurant distribution, ratings, costs, and user preferences across thousands of listings using ML clustering and Tableau visualizations.</p>
-                                <div class="tags">
-                                    <span class="tag">Python</span><span class="tag">Scikit-learn</span>
-                                    <span class="tag">Pandas</span><span class="tag">Tableau</span>
-                                </div>
-                                <a href="https://github.com/Satwik-Pamulaparthy/Zomato-Restaurant-Data-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
-                            </div>
-                        </div>
-
                     </div>
+
+                    <!-- Card 2: Customer Behavior -->
+                    <div class="orbit-card">
+                        <div class="orbit-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
+                            <svg viewBox="0 0 72 72" width="88" height="88" fill="none" aria-hidden="true">
+                                <circle cx="36" cy="36" r="28" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                                <path d="M21 30h30l-4 26H25L21 30z" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="rgba(255,255,255,0.1)" stroke-linejoin="round"/>
+                                <path d="M28 30c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                                <rect x="27" y="46" width="5" height="7" rx="1.5" fill="rgba(255,255,255,0.45)"/>
+                                <rect x="34" y="41" width="5" height="12" rx="1.5" fill="rgba(255,255,255,0.65)"/>
+                                <rect x="41" y="37" width="5" height="16" rx="1.5" fill="rgba(255,255,255,0.9)"/>
+                            </svg>
+                        </div>
+                        <div class="orbit-body">
+                            <div class="orbit-cat">Business Intelligence</div>
+                            <div class="orbit-title">Customer Behavior Analysis</div>
+                            <div class="orbit-desc">End-to-end analysis identifying purchasing trends, customer segments, and repeat purchase drivers with interactive dashboards.</div>
+                            <div class="tags">
+                                <span class="tag">SQL</span><span class="tag">Excel</span><span class="tag">Power BI</span>
+                            </div>
+                            <a href="https://github.com/Satwik-Pamulaparthy/Data-Analysis---Customer-Behavior-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Zomato -->
+                    <div class="orbit-card">
+                        <div class="orbit-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
+                            <svg viewBox="0 0 72 72" width="88" height="88" fill="none" aria-hidden="true">
+                                <circle cx="36" cy="40" r="22" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+                                <circle cx="36" cy="40" r="16" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                                <line x1="25" y1="13" x2="25" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
+                                <line x1="21" y1="13" x2="21" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
+                                <line x1="29" y1="13" x2="29" y2="24" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M21 24 Q25 29 29 24" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                                <line x1="47" y1="13" x2="47" y2="59" stroke="rgba(255,255,255,0.85)" stroke-width="2.2" stroke-linecap="round"/>
+                                <path d="M47 13 Q56 22 56 31 L47 35" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" fill="rgba(255,255,255,0.08)" stroke-linejoin="round"/>
+                                <path d="M36 31l1.8 5.5h5.8l-4.7 3.4 1.8 5.5L36 42l-4.7 3.4 1.8-5.5-4.7-3.4h5.8z" fill="rgba(255,255,255,0.88)"/>
+                            </svg>
+                        </div>
+                        <div class="orbit-body">
+                            <div class="orbit-cat">Data Analysis</div>
+                            <div class="orbit-title">Zomato Restaurant Analysis</div>
+                            <div class="orbit-desc">Uncovered patterns in ratings, costs, and user preferences across thousands of listings using ML clustering and Tableau.</div>
+                            <div class="tags">
+                                <span class="tag">Python</span><span class="tag">Scikit-learn</span>
+                                <span class="tag">Pandas</span><span class="tag">Tableau</span>
+                            </div>
+                            <a href="https://github.com/Satwik-Pamulaparthy/Zomato-Restaurant-Data-Analysis" class="proj-link" target="_blank" rel="noopener">View on GitHub →</a>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="cube-nav">
-                    <button class="cube-btn cube-prev" aria-label="Previous project"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-                    <div class="cube-dots">
-                        <button class="cube-dot active" aria-label="Project 1"></button>
-                        <button class="cube-dot" aria-label="Project 2"></button>
-                        <button class="cube-dot" aria-label="Project 3"></button>
+                <div class="orbit-nav">
+                    <button class="orbit-btn orbit-prev" aria-label="Previous project"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+                    <div class="orbit-dots">
+                        <button class="orbit-dot active" aria-label="Project 1"></button>
+                        <button class="orbit-dot" aria-label="Project 2"></button>
+                        <button class="orbit-dot" aria-label="Project 3"></button>
                     </div>
-                    <button class="cube-btn cube-next" aria-label="Next project"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+                    <button class="orbit-btn orbit-next" aria-label="Next project"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
                 </div>
             </div>
         </div>
@@ -1575,89 +1567,97 @@
         });
 
         // 3D Cube Carousels
-        function initCube3d(outerId, N) {
-            const outer = document.getElementById(outerId);
-            if (!outer) return;
-            const inner = outer.querySelector('.cube3d-inner');
-            const origFaces = Array.from(inner.querySelectorAll('.cube3d-face'));
-            const dots = Array.from(outer.querySelectorAll('.cube-dot'));
+        function initOrbit(wrapId, N) {
+            const wrap = document.getElementById(wrapId);
+            if (!wrap) return;
+            const scene = wrap.querySelector('.orbit-scene');
+            const cards = Array.from(scene.querySelectorAll('.orbit-card'));
+            const dots  = Array.from(wrap.querySelectorAll('.orbit-dot'));
+            const STEP  = 360 / N;
+            let active = 0, drag = 0;
 
-            // Clone first & last faces for seamless infinite loop
-            const cloneLast  = origFaces[origFaces.length - 1].cloneNode(true);
-            const cloneFirst = origFaces[0].cloneNode(true);
-            inner.insertBefore(cloneLast, origFaces[0]);
-            inner.appendChild(cloneFirst);
+            function getR() { return Math.min(Math.max(wrap.offsetWidth * 0.32, 110), 380); }
 
-            // allFaces[i] sits at angle (i-1)*90°
-            // index 0 = clone of last (-90°), 1..N = real slides, N+1 = clone of first (N*90°)
-            const allFaces = Array.from(inner.querySelectorAll('.cube3d-face'));
+            function cardDeg(i) {
+                let a = (i - active) * STEP + drag;
+                while (a >  180) a -= 360;
+                while (a < -180) a += 360;
+                return a;
+            }
 
-            let totalRot = 0, curLogical = 0, busy = false;
-
-            function placeFaces() {
-                const tz = inner.offsetWidth / 2;
-                allFaces.forEach((f, i) => {
-                    f.style.transform = `rotateY(${(i - 1) * 90}deg) translateZ(${tz}px)`;
+            function layout(animated) {
+                const R = getR();
+                cards.forEach((card, i) => {
+                    const deg   = cardDeg(i);
+                    const rad   = deg * Math.PI / 180;
+                    const depth = (Math.cos(rad) + 1) / 2;
+                    const tx    = Math.sin(rad) * R;
+                    const scale = 0.5 + depth * 0.5;
+                    const opacity = 0.18 + depth * 0.82;
+                    const blur    = depth < 0.35 ? (0.35 - depth) * 14 : 0;
+                    card.style.transition = animated
+                        ? 'transform .75s cubic-bezier(.45,.05,.55,.95), opacity .75s, filter .75s, box-shadow .75s'
+                        : 'none';
+                    card.style.transform  = `translateX(${tx.toFixed(1)}px) scale(${scale.toFixed(3)})`;
+                    card.style.opacity    = opacity.toFixed(3);
+                    card.style.filter     = blur > 0 ? `blur(${blur.toFixed(1)}px)` : '';
+                    card.style.zIndex     = Math.round(depth * 99);
+                    card.style.boxShadow  = depth > 0.85
+                        ? '0 12px 48px rgba(67,56,202,0.18), 0 4px 16px rgba(28,25,23,0.1)'
+                        : '0 2px 12px rgba(28,25,23,0.07)';
+                    card.style.pointerEvents = depth > 0.6 ? 'auto' : 'none';
                 });
+                dots.forEach((d, i) => d.classList.toggle('active', i === active));
             }
 
-            function setDot(i) {
-                dots.forEach(d => d.classList.remove('active'));
-                if (dots[i]) dots[i].classList.add('active');
+            function snapToNearest() {
+                let minAbs = Infinity, snapIdx = 0;
+                cards.forEach((_, i) => {
+                    const a = Math.abs(cardDeg(i));
+                    if (a < minAbs) { minAbs = a; snapIdx = i; }
+                });
+                active = snapIdx; drag = 0; layout(true);
             }
 
-            function spin(newRot, newLogical) {
-                busy = true;
-                totalRot = newRot;
-                curLogical = newLogical;
-                inner.style.transform = `rotateY(${totalRot}deg)`;
-                setDot(curLogical);
+            function goNext() { active = (active + 1) % N; drag = 0; layout(true); }
+            function goPrev() { active = (active - 1 + N) % N; drag = 0; layout(true); }
+            function goTo(idx) { active = idx; drag = 0; layout(true); }
 
-                inner.addEventListener('transitionend', function done() {
-                    inner.removeEventListener('transitionend', done);
-                    // Teleport after wrapping past last or before first
-                    if (totalRot <= -(N * 90)) {
-                        inner.classList.add('no-anim');
-                        totalRot = 0;
-                        inner.style.transform = `rotateY(0deg)`;
-                        inner.getBoundingClientRect(); // flush
-                        inner.classList.remove('no-anim');
-                    } else if (totalRot >= 90) {
-                        inner.classList.add('no-anim');
-                        totalRot = -((N - 1) * 90);
-                        inner.style.transform = `rotateY(${totalRot}deg)`;
-                        inner.getBoundingClientRect();
-                        inner.classList.remove('no-anim');
-                    }
-                    busy = false;
-                }, { once: true });
-            }
+            let startX = 0, startDrag = 0, isDragging = false, rafId = null;
 
-            function next() { if (!busy) spin(totalRot - 90, (curLogical + 1) % N); }
-            function prev() { if (!busy) spin(totalRot + 90, (curLogical - 1 + N) % N); }
-            function goTo(idx) {
-                if (busy || idx === curLogical) return;
-                const fwd = idx > curLogical;
-                spin(fwd ? totalRot - (idx - curLogical) * 90 : totalRot + (curLogical - idx) * 90, idx);
-            }
-
-            placeFaces();
-            window.addEventListener('resize', placeFaces);
-
-            outer.querySelector('.cube-prev').addEventListener('click', prev);
-            outer.querySelector('.cube-next').addEventListener('click', next);
-            dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
-
-            let tx = 0;
-            inner.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-            inner.addEventListener('touchend', e => {
-                const dx = e.changedTouches[0].clientX - tx;
-                if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
+            scene.addEventListener('mousedown', e => {
+                isDragging = true; startX = e.clientX; startDrag = drag;
+                e.preventDefault();
+            });
+            window.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                drag = startDrag + (e.clientX - startX) * 0.28;
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => layout(false));
+            });
+            window.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false; snapToNearest();
+            });
+            scene.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX; startDrag = drag;
             }, { passive: true });
+            scene.addEventListener('touchmove', e => {
+                drag = startDrag + (e.touches[0].clientX - startX) * 0.28;
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => layout(false));
+            }, { passive: true });
+            scene.addEventListener('touchend', snapToNearest, { passive: true });
+
+            wrap.querySelector('.orbit-prev').addEventListener('click', goPrev);
+            wrap.querySelector('.orbit-next').addEventListener('click', goNext);
+            dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+            window.addEventListener('resize', () => layout(false));
+            layout(false);
         }
 
-        initCube3d('projCube',   3);
-        initCube3d('skillsCube', 4);
+        initOrbit('projOrbit',   3);
+        initOrbit('skillsOrbit', 4);
 
         // Contact form
         const form = document.getElementById('contactForm');
