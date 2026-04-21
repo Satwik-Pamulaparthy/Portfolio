@@ -295,15 +295,28 @@
         }
 
         .about-photo {
-            width: 280px; height: 280px; border-radius: var(--rl);
+            width: 280px; height: 280px; border-radius: 50%;
             overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 32px var(--shadow);
+            border: 3px solid transparent;
+            background: linear-gradient(var(--white), var(--white)) padding-box,
+                        linear-gradient(135deg, var(--accent), var(--warm)) border-box;
+            box-shadow: 0 8px 40px rgba(67,56,202,0.15);
+            transition: box-shadow 0.35s ease, transform 0.35s ease;
+        }
+
+        .about-photo:hover {
+            box-shadow: 0 16px 56px rgba(67,56,202,0.25);
+            transform: scale(1.03);
         }
 
         .about-photo img {
             width: 100%; height: 100%;
             object-fit: cover; object-position: center 20%;
+            transition: transform 0.45s ease;
+        }
+
+        .about-photo:hover img {
+            transform: scale(1.1);
         }
 
         .about-text p {
