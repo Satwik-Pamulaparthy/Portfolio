@@ -746,8 +746,8 @@
         .section.in .skill-card:nth-child(3) { animation: fadeUp .5s ease .49s both; }
         .section.in .skill-card:nth-child(4) { animation: fadeUp .5s ease .61s both; }
 
-        /* Projects */
-        .section.in .cube-carousel { animation: fadeUp .6s ease .25s both; }
+        /* Projects & Skills cubes */
+        .section.in .cube3d-outer { animation: fadeUp .6s ease .25s both; }
 
         /* Timeline (experience & education) */
         .section.in .tl:nth-child(1) { animation: fadeUp .5s ease .28s both; }
@@ -760,63 +760,50 @@
         .section.in .contact-lead  { animation: fadeRight .55s ease .2s  both; }
         .section.in .form-wrap     { animation: fadeLeft  .55s ease .35s both; }
 
-        /* ── Cube Carousel ── */
-        .cube-carousel {
+        /* ── 3-D Cube Carousel ── */
+        .cube3d-outer {
             position: relative;
             max-width: 860px;
             margin: 0 auto;
-        }
-
-        .cube-viewport {
-            perspective: 1100px;
             overflow: hidden;
             border-radius: var(--rl);
-            box-shadow: 0 8px 40px rgba(28,25,23,0.12), 0 24px 64px rgba(67,56,202,0.11);
+            box-shadow: 0 8px 40px rgba(28,25,23,0.12), 0 24px 64px rgba(67,56,202,0.10);
         }
 
-        .cube-track {
+        .cube3d-scene { perspective: 1200px; perspective-origin: 50% 50%; }
+
+        .cube3d-inner {
             position: relative;
             height: 300px;
             transform-style: preserve-3d;
+            transition: transform .65s cubic-bezier(.45,.05,.55,.95);
+            will-change: transform;
         }
 
-        .cube-slide {
+        .cube3d-inner.no-anim { transition: none !important; }
+
+        .cube3d-face {
             position: absolute;
-            inset: 0;
-            display: flex;
-            opacity: 0;
-            pointer-events: none;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
             background: var(--white);
             border: 1px solid var(--border);
-            border-radius: var(--rl);
+            display: flex;
+            overflow: hidden;
         }
 
-        .cube-slide.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .cube-slide.out-left  { animation: cubeOutLeft  .45s cubic-bezier(.4,0,.2,1) forwards; }
-        .cube-slide.in-right  { animation: cubeInRight  .45s cubic-bezier(.4,0,.2,1) forwards; }
-        .cube-slide.out-right { animation: cubeOutRight .45s cubic-bezier(.4,0,.2,1) forwards; }
-        .cube-slide.in-left   { animation: cubeInLeft   .45s cubic-bezier(.4,0,.2,1) forwards; }
-
-        @keyframes cubeInRight  { from { transform: rotateY(90deg); opacity:0; } to { transform: rotateY(0); opacity:1; } }
-        @keyframes cubeOutLeft  { from { transform: rotateY(0); opacity:1; } to { transform: rotateY(-90deg); opacity:0; } }
-        @keyframes cubeInLeft   { from { transform: rotateY(-90deg); opacity:0; } to { transform: rotateY(0); opacity:1; } }
-        @keyframes cubeOutRight { from { transform: rotateY(0); opacity:1; } to { transform: rotateY(90deg); opacity:0; } }
-
+        /* ── face panels ── */
         .cube-vis {
-            width: 230px; min-width: 230px;
+            width: 220px; min-width: 220px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: var(--rl) 0 0 var(--rl);
-            overflow: hidden; flex-shrink: 0;
+            flex-shrink: 0; overflow: hidden;
         }
 
         .cube-body {
             padding: 2rem 2.25rem;
             display: flex; flex-direction: column;
-            flex: 1; justify-content: center; overflow: auto;
+            flex: 1; justify-content: center;
         }
 
         .cube-body .proj-cat { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: .45rem; }
@@ -829,6 +816,7 @@
 
         .cube-body p { color: var(--muted); font-size: .88rem; line-height: 1.7; margin-bottom: .85rem; }
 
+        /* ── Shared nav ── */
         .cube-nav {
             display: flex; align-items: center;
             justify-content: center; gap: 1.25rem;
@@ -837,8 +825,7 @@
 
         .cube-btn {
             width: 44px; height: 44px; border-radius: 50%;
-            background: var(--white);
-            border: 1px solid var(--border);
+            background: var(--white); border: 1px solid var(--border);
             box-shadow: 0 2px 12px var(--shadow);
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all .25s; color: var(--muted);
@@ -866,10 +853,6 @@
         }
 
         /* ── Responsive ── */
-        @media (max-width: 1024px) {
-            .skills-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
         @media (max-width: 768px) {
             .hero-inner { grid-template-columns: 1fr; }
             .hero-neural { display: flex; justify-content: center; margin-top: 2rem; }
@@ -878,9 +861,11 @@
             .about-grid { grid-template-columns: 1fr; }
             .about-photo { margin: 0 auto; }
             .contact-grid { grid-template-columns: 1fr; }
-            .cube-track { height: auto; min-height: 460px; }
-            .cube-slide { flex-direction: column; }
-            .cube-vis { width: 100%; min-width: unset; height: 160px; border-radius: var(--rl) var(--rl) 0 0; }
+            /* cube: switch to column layout, taller inner */
+            #projCube  .cube3d-inner { height: 480px; }
+            #skillsCube .cube3d-inner { height: 320px; }
+            .cube3d-face { flex-direction: column; }
+            .cube-vis { width: 100%; min-width: unset; height: 160px; }
             .nav-list {
                 display: none; position: absolute; top: 100%; right: 5%;
                 background: rgba(247,244,239,.97); backdrop-filter: blur(20px);
@@ -893,7 +878,6 @@
         }
 
         @media (max-width: 520px) {
-            .skills-grid { grid-template-columns: 1fr; }
             .hero-stats { flex-wrap: wrap; gap: 1rem; }
         }
     </style>
@@ -969,51 +953,125 @@
         <div class="section-inner">
             <div class="section-label">What I Know</div>
             <h2 class="section-title">Technical Skills</h2>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="sk-icon">
-                        <svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2v16Zm4-8h2v6H8v-6Zm4-4h2v10h-2V7Zm4 3h2v7h-2v-7Z"/></svg>
-                    </div>
-                    <h3>Programming & Query</h3>
-                    <div class="pills">
-                        <span class="pill">Python</span><span class="pill">Pandas</span>
-                        <span class="pill">NumPy</span><span class="pill">SciPy</span>
-                        <span class="pill">SQL</span><span class="pill">MySQL</span>
-                        <span class="pill">PostgreSQL</span>
+            <div class="cube3d-outer" id="skillsCube">
+                <div class="cube3d-scene">
+                    <div class="cube3d-inner">
+
+                        <!-- Skill 1: Programming & Query -->
+                        <div class="cube3d-face">
+                            <div class="cube-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
+                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
+                                    <rect x="12" y="14" width="48" height="44" rx="6" stroke="rgba(255,255,255,0.7)" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
+                                    <line x1="12" y1="26" x2="60" y2="26" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                    <circle cx="20" cy="20" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                                    <circle cx="28" cy="20" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                                    <circle cx="36" cy="20" r="2.5" fill="rgba(255,255,255,0.2)"/>
+                                    <path d="M22 36l-6 5 6 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                    <path d="M32 34l8 7-8 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                    <line x1="28" y1="35" x2="36" y2="49" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="cube-body">
+                                <div class="proj-cat">Category 1</div>
+                                <h3>Programming & Query</h3>
+                                <div class="pills">
+                                    <span class="pill">Python</span><span class="pill">Pandas</span>
+                                    <span class="pill">NumPy</span><span class="pill">SciPy</span>
+                                    <span class="pill">SQL</span><span class="pill">MySQL</span>
+                                    <span class="pill">PostgreSQL</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skill 2: Visualization -->
+                        <div class="cube3d-face">
+                            <div class="cube-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
+                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
+                                    <rect x="10" y="10" width="52" height="52" rx="6" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                                    <polyline points="14,52 26,36 35,43 47,24 58,32" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                    <circle cx="26" cy="36" r="3" fill="white" opacity="0.85"/>
+                                    <circle cx="35" cy="43" r="3" fill="white" opacity="0.85"/>
+                                    <circle cx="47" cy="24" r="3" fill="white" opacity="0.85"/>
+                                    <line x1="14" y1="58" x2="58" y2="58" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                                    <line x1="14" y1="14" x2="14" y2="58" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="cube-body">
+                                <div class="proj-cat">Category 2</div>
+                                <h3>Visualization</h3>
+                                <div class="pills">
+                                    <span class="pill">Tableau</span><span class="pill">Power BI</span>
+                                    <span class="pill">Matplotlib</span><span class="pill">Seaborn</span>
+                                    <span class="pill">Plotly</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skill 3: Databases & Cloud -->
+                        <div class="cube3d-face">
+                            <div class="cube-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
+                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
+                                    <ellipse cx="36" cy="22" rx="20" ry="8" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
+                                    <path d="M16 22v12c0 4.4 9 8 20 8s20-3.6 20-8V22" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="none"/>
+                                    <path d="M16 34v12c0 4.4 9 8 20 8s20-3.6 20-8V34" stroke="rgba(255,255,255,0.6)" stroke-width="2" fill="none"/>
+                                    <line x1="36" y1="54" x2="36" y2="62" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+                                    <circle cx="44" cy="60" r="5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="rgba(255,255,255,0.1)"/>
+                                    <path d="M41.5 60h5M44 57.5v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="cube-body">
+                                <div class="proj-cat">Category 3</div>
+                                <h3>Databases & Cloud</h3>
+                                <div class="pills">
+                                    <span class="pill">MySQL</span><span class="pill">SQLite</span>
+                                    <span class="pill">BigQuery</span><span class="pill">AWS</span>
+                                    <span class="pill">Azure</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skill 4: Machine Learning -->
+                        <div class="cube3d-face">
+                            <div class="cube-vis" style="background: linear-gradient(145deg, #5b21b6 0%, #7c3aed 100%);">
+                                <svg viewBox="0 0 72 72" width="80" height="80" fill="none" aria-hidden="true">
+                                    <circle cx="36" cy="36" r="12" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="rgba(255,255,255,0.08)"/>
+                                    <circle cx="36" cy="36" r="4" fill="rgba(255,255,255,0.9)"/>
+                                    <circle cx="14" cy="20" r="4" fill="rgba(255,255,255,0.65)"/>
+                                    <circle cx="58" cy="20" r="4" fill="rgba(255,255,255,0.65)"/>
+                                    <circle cx="14" cy="52" r="4" fill="rgba(255,255,255,0.65)"/>
+                                    <circle cx="58" cy="52" r="4" fill="rgba(255,255,255,0.65)"/>
+                                    <circle cx="36" cy="10" r="4" fill="rgba(255,255,255,0.5)"/>
+                                    <circle cx="36" cy="62" r="4" fill="rgba(255,255,255,0.5)"/>
+                                    <line x1="14" y1="20" x2="26" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                    <line x1="58" y1="20" x2="46" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                    <line x1="14" y1="52" x2="26" y2="43" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                    <line x1="58" y1="52" x2="46" y2="43" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                    <line x1="36" y1="10" x2="36" y2="24" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                    <line x1="36" y1="48" x2="36" y2="62" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <div class="cube-body">
+                                <div class="proj-cat">Category 4</div>
+                                <h3>Machine Learning</h3>
+                                <div class="pills">
+                                    <span class="pill">Scikit-learn</span><span class="pill">Regression</span>
+                                    <span class="pill">Classification</span><span class="pill">Clustering</span>
+                                    <span class="pill">Feature Eng.</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="skill-card">
-                    <div class="sk-icon">
-                        <svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2v16Zm2-3 4-4 3 3 6-7 1.5 1.3L13 18l-3-3-3 3-1-2Z"/></svg>
+                <div class="cube-nav">
+                    <button class="cube-btn cube-prev" aria-label="Previous skill"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+                    <div class="cube-dots">
+                        <button class="cube-dot active" aria-label="Skill 1"></button>
+                        <button class="cube-dot" aria-label="Skill 2"></button>
+                        <button class="cube-dot" aria-label="Skill 3"></button>
+                        <button class="cube-dot" aria-label="Skill 4"></button>
                     </div>
-                    <h3>Visualization</h3>
-                    <div class="pills">
-                        <span class="pill">Tableau</span><span class="pill">Power BI</span>
-                        <span class="pill">Matplotlib</span><span class="pill">Seaborn</span>
-                        <span class="pill">Plotly</span>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="sk-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4Zm0 2c3.87 0 6 .99 6 2s-2.13 2-6 2-6-.99-6-2 2.13-2 6-2Zm6 10c0 1.01-2.13 2-6 2s-6-.99-6-2v-2.23C7.62 13.55 9.7 14 12 14s4.38-.45 6-1.23V15Zm0-4.5c0 1.01-2.13 2-6 2s-6-.99-6-2v-2.23C7.62 9.05 9.7 9.5 12 9.5s4.38-.45 6-1.23V10.5Z"/></svg>
-                    </div>
-                    <h3>Databases & Cloud</h3>
-                    <div class="pills">
-                        <span class="pill">MySQL</span><span class="pill">SQLite</span>
-                        <span class="pill">BigQuery</span><span class="pill">AWS</span>
-                        <span class="pill">Azure</span>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="sk-icon">
-                        <svg viewBox="0 0 24 24"><path d="M9 3h6v2h-2v2h3a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h3V5H9V3Zm-2 9h2v2H7v-2Zm8 0h2v2h-2v-2Z"/></svg>
-                    </div>
-                    <h3>Machine Learning</h3>
-                    <div class="pills">
-                        <span class="pill">Scikit-learn</span><span class="pill">Regression</span>
-                        <span class="pill">Classification</span><span class="pill">Clustering</span>
-                        <span class="pill">Feature Eng.</span>
-                    </div>
+                    <button class="cube-btn cube-next" aria-label="Next skill"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
                 </div>
             </div>
         </div>
@@ -1026,12 +1084,12 @@
         <div class="section-inner">
             <div class="section-label">What I've Built</div>
             <h2 class="section-title">Featured Projects</h2>
-            <div class="cube-carousel">
-                <div class="cube-viewport">
-                    <div class="cube-track" id="cubeTrack">
+            <div class="cube3d-outer" id="projCube">
+                <div class="cube3d-scene">
+                    <div class="cube3d-inner" id="projInner">
 
-                        <!-- Slide 1: AI Cost Optimization -->
-                        <div class="cube-slide active" data-index="0">
+                        <!-- Face 1: AI Cost Optimization -->
+                        <div class="cube3d-face">
                             <div class="cube-vis" style="background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 100%);">
                                 <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
                                     <circle cx="36" cy="36" r="30" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
@@ -1066,8 +1124,8 @@
                             </div>
                         </div>
 
-                        <!-- Slide 2: Customer Behavior -->
-                        <div class="cube-slide" data-index="1">
+                        <!-- Face 2: Customer Behavior -->
+                        <div class="cube3d-face">
                             <div class="cube-vis" style="background: linear-gradient(145deg, #312e81 0%, #4338ca 100%);">
                                 <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
                                     <circle cx="36" cy="36" r="28" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
@@ -1089,8 +1147,8 @@
                             </div>
                         </div>
 
-                        <!-- Slide 3: Zomato -->
-                        <div class="cube-slide" data-index="2">
+                        <!-- Face 3: Zomato -->
+                        <div class="cube3d-face">
                             <div class="cube-vis" style="background: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);">
                                 <svg viewBox="0 0 72 72" width="96" height="96" fill="none" style="position:relative;z-index:1;" aria-hidden="true">
                                     <circle cx="36" cy="40" r="22" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
@@ -1119,17 +1177,13 @@
                     </div>
                 </div>
                 <div class="cube-nav">
-                    <button class="cube-btn" id="cubePrev" aria-label="Previous project">
-                        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                    </button>
+                    <button class="cube-btn cube-prev" aria-label="Previous project"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
                     <div class="cube-dots">
-                        <button class="cube-dot active" data-idx="0" aria-label="Project 1"></button>
-                        <button class="cube-dot" data-idx="1" aria-label="Project 2"></button>
-                        <button class="cube-dot" data-idx="2" aria-label="Project 3"></button>
+                        <button class="cube-dot active" aria-label="Project 1"></button>
+                        <button class="cube-dot" aria-label="Project 2"></button>
+                        <button class="cube-dot" aria-label="Project 3"></button>
                     </div>
-                    <button class="cube-btn" id="cubeNext" aria-label="Next project">
-                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                    </button>
+                    <button class="cube-btn cube-next" aria-label="Next project"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
                 </div>
             </div>
         </div>
@@ -1355,63 +1409,90 @@
             });
         });
 
-        // Cube Carousel
-        (function () {
-            const track = document.getElementById('cubeTrack');
-            if (!track) return;
-            const slides = Array.from(track.querySelectorAll('.cube-slide'));
-            const dots   = Array.from(document.querySelectorAll('.cube-dot'));
-            let current  = 0;
-            let animating = false;
+        // 3D Cube Carousels
+        function initCube3d(outerId, N) {
+            const outer = document.getElementById(outerId);
+            if (!outer) return;
+            const inner = outer.querySelector('.cube3d-inner');
+            const origFaces = Array.from(inner.querySelectorAll('.cube3d-face'));
+            const dots = Array.from(outer.querySelectorAll('.cube-dot'));
 
-            function goTo(next, dir) {
-                if (animating || next === current) return;
-                animating = true;
-                const cur = slides[current];
-                const nxt = slides[next];
-                const outCls = dir > 0 ? 'out-left'  : 'out-right';
-                const inCls  = dir > 0 ? 'in-right'  : 'in-left';
+            // Clone first & last faces for seamless infinite loop
+            const cloneLast  = origFaces[origFaces.length - 1].cloneNode(true);
+            const cloneFirst = origFaces[0].cloneNode(true);
+            inner.insertBefore(cloneLast, origFaces[0]);
+            inner.appendChild(cloneFirst);
 
-                nxt.style.opacity = '1';
-                nxt.style.pointerEvents = 'auto';
-                cur.classList.add(outCls);
-                nxt.classList.add(inCls);
+            // allFaces[i] sits at angle (i-1)*90°
+            // index 0 = clone of last (-90°), 1..N = real slides, N+1 = clone of first (N*90°)
+            const allFaces = Array.from(inner.querySelectorAll('.cube3d-face'));
 
-                cur.addEventListener('animationend', function handler() {
-                    cur.removeEventListener('animationend', handler);
-                    cur.classList.remove('active', outCls);
-                    cur.style.opacity = '';
-                    cur.style.pointerEvents = '';
-                    nxt.classList.remove(inCls);
-                    nxt.classList.add('active');
-                    dots[current].classList.remove('active');
-                    current = next;
-                    dots[current].classList.add('active');
-                    animating = false;
+            let totalRot = 0, curLogical = 0, busy = false;
+
+            function placeFaces() {
+                const tz = inner.offsetWidth / 2;
+                allFaces.forEach((f, i) => {
+                    f.style.transform = `rotateY(${(i - 1) * 90}deg) translateZ(${tz}px)`;
                 });
             }
 
-            document.getElementById('cubeNext').addEventListener('click', () => {
-                goTo((current + 1) % slides.length, 1);
-            });
-            document.getElementById('cubePrev').addEventListener('click', () => {
-                goTo((current - 1 + slides.length) % slides.length, -1);
-            });
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    const idx = parseInt(dot.dataset.idx, 10);
-                    goTo(idx, idx > current ? 1 : -1);
-                });
-            });
+            function setDot(i) {
+                dots.forEach(d => d.classList.remove('active'));
+                if (dots[i]) dots[i].classList.add('active');
+            }
 
-            // Swipe support
-            let touchStartX = 0;
-            track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-            track.addEventListener('touchend', e => {
-                const dx = e.changedTouches[0].clientX - touchStartX;
-                if (Math.abs(dx) > 40) goTo(dx < 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length, dx < 0 ? 1 : -1);
+            function spin(newRot, newLogical) {
+                busy = true;
+                totalRot = newRot;
+                curLogical = newLogical;
+                inner.style.transform = `rotateY(${totalRot}deg)`;
+                setDot(curLogical);
+
+                inner.addEventListener('transitionend', function done() {
+                    inner.removeEventListener('transitionend', done);
+                    // Teleport after wrapping past last or before first
+                    if (totalRot <= -(N * 90)) {
+                        inner.classList.add('no-anim');
+                        totalRot = 0;
+                        inner.style.transform = `rotateY(0deg)`;
+                        inner.getBoundingClientRect(); // flush
+                        inner.classList.remove('no-anim');
+                    } else if (totalRot >= 90) {
+                        inner.classList.add('no-anim');
+                        totalRot = -((N - 1) * 90);
+                        inner.style.transform = `rotateY(${totalRot}deg)`;
+                        inner.getBoundingClientRect();
+                        inner.classList.remove('no-anim');
+                    }
+                    busy = false;
+                }, { once: true });
+            }
+
+            function next() { if (!busy) spin(totalRot - 90, (curLogical + 1) % N); }
+            function prev() { if (!busy) spin(totalRot + 90, (curLogical - 1 + N) % N); }
+            function goTo(idx) {
+                if (busy || idx === curLogical) return;
+                const fwd = idx > curLogical;
+                spin(fwd ? totalRot - (idx - curLogical) * 90 : totalRot + (curLogical - idx) * 90, idx);
+            }
+
+            placeFaces();
+            window.addEventListener('resize', placeFaces);
+
+            outer.querySelector('.cube-prev').addEventListener('click', prev);
+            outer.querySelector('.cube-next').addEventListener('click', next);
+            dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+            let tx = 0;
+            inner.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+            inner.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - tx;
+                if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
             }, { passive: true });
-        })();
+        }
+
+        initCube3d('projCube',   3);
+        initCube3d('skillsCube', 4);
 
         // Contact form
         const form = document.getElementById('contactForm');
