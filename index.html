@@ -212,32 +212,15 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ── Hero GIF ── */
+        /* ── Hero Canvas Animation ── */
         .hero-neural {
             display: flex; align-items: center; justify-content: center;
             animation: fadeIn 1s ease .5s backwards; flex-shrink: 0;
         }
 
-        .hero-gif {
+        #heroCanvas {
+            display: block;
             width: 520px; height: 520px;
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .hero-gif::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: #4338CA;
-            mix-blend-mode: color;
-            pointer-events: none;
-            border-radius: inherit;
-        }
-
-        .hero-gif img {
-            width: 100%; height: 100%;
-            object-fit: cover; display: block;
         }
 
         /* ── Buttons ── */
@@ -856,7 +839,7 @@
         @media (max-width: 768px) {
             .hero-inner { grid-template-columns: 1fr; }
             .hero-neural { display: flex; justify-content: center; margin-top: 2rem; }
-            .hero-gif { width: 320px; height: 320px; }
+            #heroCanvas { width: 320px; height: 320px; }
             .hero-stats { gap: 1.5rem; }
             .about-grid { grid-template-columns: 1fr; }
             .about-photo { margin: 0 auto; }
@@ -919,9 +902,7 @@
                 </div>
             </div>
             <div class="hero-neural">
-                <div class="hero-gif">
-                    <img src="https://media.giphy.com/media/u1WhXLjwgcXpHJBMRM/giphy.gif" alt="Tech animation" loading="eager">
-                </div>
+                <canvas id="heroCanvas"></canvas>
             </div>
         </div>
     </section>
@@ -1358,6 +1339,190 @@
     </footer>
 
     <script>
+        // ── Hero Canvas: Data Intelligence Animation ──────────────────────────
+        (function () {
+            const canvas = document.getElementById('heroCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const DPR = Math.min(window.devicePixelRatio || 1, 2);
+            const W = 520, H = 520;
+            canvas.width  = W * DPR;
+            canvas.height = H * DPR;
+            canvas.style.width  = W + 'px';
+            canvas.style.height = H + 'px';
+            ctx.scale(DPR, DPR);
+
+            const C = '67,56,202'; // accent indigo RGB
+
+            // ── Nodes ──────────────────────────────────────────────────────────
+            const HUBS = 7, DATA = 55, N = HUBS + DATA;
+            const LINK = 115;
+
+            const nodes = Array.from({ length: N }, (_, i) => {
+                const hub = i < HUBS;
+                return {
+                    x:   60 + Math.random() * (W - 120),
+                    y:   60 + Math.random() * (H - 120),
+                    vx:  (Math.random() - 0.5) * (hub ? 0.2 : 0.52),
+                    vy:  (Math.random() - 0.5) * (hub ? 0.2 : 0.52),
+                    r:   hub ? 4.5 + Math.random() * 2.5 : 1.8 + Math.random() * 1.8,
+                    hub,
+                    ph:  Math.random() * Math.PI * 2,
+                    phs: 0.011 + Math.random() * 0.017,
+                };
+            });
+
+            // ── Data packets ───────────────────────────────────────────────────
+            const packs = Array.from({ length: 20 }, () => ({
+                from: Math.floor(Math.random() * N),
+                to:   Math.floor(Math.random() * N),
+                t:    Math.random(),
+                sp:   0.005 + Math.random() * 0.007,
+            }));
+
+            // ── Mouse ──────────────────────────────────────────────────────────
+            let mx = W / 2, my = H / 2;
+            canvas.addEventListener('mousemove', e => {
+                const r = canvas.getBoundingClientRect();
+                mx = (e.clientX - r.left) * (W / r.width);
+                my = (e.clientY - r.top)  * (H / r.height);
+            });
+
+            // ── Hex outline helper ─────────────────────────────────────────────
+            function hexPath(x, y, r) {
+                ctx.beginPath();
+                for (let k = 0; k < 6; k++) {
+                    const a = k * Math.PI / 3 - Math.PI / 6;
+                    k === 0 ? ctx.moveTo(x + r * Math.cos(a), y + r * Math.sin(a))
+                            : ctx.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
+                }
+                ctx.closePath();
+            }
+
+            // ── Draw ──────────────────────────────────────────────────────────
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+
+                // Dot-grid backdrop
+                ctx.fillStyle = `rgba(${C},0.055)`;
+                for (let gx = 18; gx < W; gx += 34)
+                    for (let gy = 18; gy < H; gy += 34) {
+                        ctx.beginPath();
+                        ctx.arc(gx, gy, 1, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                // Update nodes
+                nodes.forEach(n => {
+                    n.ph += n.phs;
+
+                    // Mouse repulsion
+                    const ddx = n.x - mx, ddy = n.y - my;
+                    const d2 = ddx * ddx + ddy * ddy;
+                    if (d2 < 6400 && d2 > 0.01) {
+                        const d = Math.sqrt(d2);
+                        const f = (80 - d) / 80 * 0.022;
+                        n.vx += (ddx / d) * f;
+                        n.vy += (ddy / d) * f;
+                    }
+
+                    n.vx *= 0.984; n.vy *= 0.984;
+                    n.x  += n.vx;  n.y  += n.vy;
+
+                    if (n.x < n.r)      { n.x = n.r;      n.vx =  Math.abs(n.vx); }
+                    if (n.x > W - n.r)  { n.x = W - n.r;  n.vx = -Math.abs(n.vx); }
+                    if (n.y < n.r)      { n.y = n.r;      n.vy =  Math.abs(n.vy); }
+                    if (n.y > H - n.r)  { n.y = H - n.r;  n.vy = -Math.abs(n.vy); }
+                });
+
+                // Connections
+                const live = [];
+                for (let i = 0; i < N; i++) {
+                    for (let j = i + 1; j < N; j++) {
+                        const a = nodes[i], b = nodes[j];
+                        const ddx = a.x - b.x, ddy = a.y - b.y;
+                        const d = Math.sqrt(ddx * ddx + ddy * ddy);
+                        if (d < LINK) {
+                            const al = Math.pow(1 - d / LINK, 1.6) * 0.28;
+                            ctx.beginPath();
+                            ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+                            ctx.strokeStyle = `rgba(${C},${al})`;
+                            ctx.lineWidth = (a.hub || b.hub) ? 0.9 : 0.55;
+                            ctx.stroke();
+                            live.push([i, j]);
+                        }
+                    }
+                }
+
+                // Packets
+                packs.forEach(pk => {
+                    const a = nodes[pk.from], b = nodes[pk.to];
+                    const ddx = a.x - b.x, ddy = a.y - b.y;
+                    const d = Math.sqrt(ddx * ddx + ddy * ddy);
+                    if (d >= LINK) {
+                        if (live.length) {
+                            const lr = live[Math.floor(Math.random() * live.length)];
+                            [pk.from, pk.to] = lr; pk.t = 0;
+                        }
+                        return;
+                    }
+                    pk.t += pk.sp;
+                    if (pk.t > 1) { pk.t = 0; pk.from = pk.to; pk.to = Math.floor(Math.random() * N); }
+
+                    const px = a.x + (b.x - a.x) * pk.t;
+                    const py = a.y + (b.y - a.y) * pk.t;
+                    const glow = Math.sin(pk.t * Math.PI);
+
+                    const g = ctx.createRadialGradient(px, py, 0, px, py, 8);
+                    g.addColorStop(0, `rgba(${C},${glow * 0.52})`);
+                    g.addColorStop(1, `rgba(${C},0)`);
+                    ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = g; ctx.fill();
+
+                    ctx.beginPath(); ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${0.82 + glow * 0.18})`; ctx.fill();
+                });
+
+                // Nodes
+                nodes.forEach(n => {
+                    const pulse = 0.58 + Math.sin(n.ph) * 0.42;
+
+                    if (n.hub) {
+                        // Outer hex ring
+                        hexPath(n.x, n.y, n.r + 5.5 + Math.sin(n.ph) * 2);
+                        ctx.strokeStyle = `rgba(${C},${pulse * 0.2})`;
+                        ctx.lineWidth = 1; ctx.stroke();
+                        // Inner hex
+                        hexPath(n.x, n.y, n.r + 2);
+                        ctx.strokeStyle = `rgba(${C},${pulse * 0.45})`;
+                        ctx.lineWidth = 0.75; ctx.stroke();
+                    }
+
+                    // Glow halo
+                    const hR = n.r * (n.hub ? 4.8 : 3.2);
+                    const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, hR);
+                    grd.addColorStop(0, `rgba(${C},${pulse * (n.hub ? 0.36 : 0.2)})`);
+                    grd.addColorStop(1, `rgba(${C},0)`);
+                    ctx.beginPath(); ctx.arc(n.x, n.y, hR, 0, Math.PI * 2);
+                    ctx.fillStyle = grd; ctx.fill();
+
+                    // Core disc
+                    ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${C},${pulse})`; ctx.fill();
+
+                    // Specular highlight
+                    ctx.beginPath();
+                    ctx.arc(n.x - n.r * 0.28, n.y - n.r * 0.32, n.r * 0.38, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${pulse * 0.88})`; ctx.fill();
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        })();
+
         // Progress bar
         window.addEventListener('scroll', () => {
             const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
