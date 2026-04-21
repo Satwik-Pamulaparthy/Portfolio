@@ -221,7 +221,10 @@
         #nnCanvas {
             display: block;
             width: 300px; height: 300px;
+            cursor: grab;
         }
+
+        #nnCanvas:active { cursor: grabbing; }
 
         /* ── Buttons ── */
         .btn {
@@ -1071,113 +1074,165 @@
     </footer>
 
     <script>
-        // Neural Network Animation
+        // 3D Interactive Neural Network
         (function () {
             const canvas = document.getElementById('nnCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const W = 300, H = 300;
-            const C = '#4338CA';
 
-            // Layered node positions
-            const layerDefs = [
-                [80, 135, 190, 245],   // x=48, 3 nodes → actually use y values per layer
+            // 3D node layout: 4 layers, nodes spread in y/z
+            const layerXs = [-90, -30, 30, 90];
+            const layerShapes = [
+                [[0,-55,0],[0,0,55],[0,55,0],[0,-28,-45]],
+                [[0,-60,20],[0,-20,-55],[0,25,50],[0,55,-10],[0,0,0]],
+                [[0,-60,20],[0,-20,-55],[0,25,50],[0,55,-10],[0,0,0]],
+                [[0,-55,0],[0,0,55],[0,55,0],[0,-28,-45]],
             ];
 
-            const layers = [
-                [{x:45,y:85},{x:45,y:150},{x:45,y:215}],
-                [{x:120,y:55},{x:120,y:115},{x:120,y:175},{x:120,y:235}],
-                [{x:195,y:55},{x:195,y:115},{x:195,y:175},{x:195,y:235}],
-                [{x:262,y:85},{x:262,y:150},{x:262,y:215}],
-            ];
+            const nodes = [];
+            layerShapes.forEach((layer, li) => {
+                layer.forEach(([,y,z]) => {
+                    nodes.push({ x: layerXs[li], y, z, phase: Math.random() * Math.PI * 2 });
+                });
+            });
 
-            const nodes = layers.flat().map(n => ({
-                ...n,
-                phase: Math.random() * Math.PI * 2
-            }));
-
-            // Build connections between adjacent layers
+            // Connections between adjacent layers
             const conns = [];
-            let offset = 0;
-            for (let l = 0; l < layers.length - 1; l++) {
-                const nextOffset = offset + layers[l].length;
-                for (let i = 0; i < layers[l].length; i++) {
-                    for (let j = 0; j < layers[l + 1].length; j++) {
+            let off = 0;
+            for (let l = 0; l < layerShapes.length - 1; l++) {
+                const nextOff = off + layerShapes[l].length;
+                for (let i = 0; i < layerShapes[l].length; i++) {
+                    for (let j = 0; j < layerShapes[l + 1].length; j++) {
                         conns.push({
-                            from: offset + i,
-                            to: nextOffset + j,
+                            from: off + i, to: nextOff + j,
                             t: Math.random(),
-                            speed: 0.004 + Math.random() * 0.004,
-                            active: Math.random() > 0.45
+                            speed: 0.004 + Math.random() * 0.005,
+                            active: Math.random() > 0.5
                         });
                     }
                 }
-                offset = nextOffset;
+                off = nextOff;
+            }
+
+            let rotX = 0.25, rotY = 0.4;
+            let velX = 0, velY = 0.006;
+            let dragging = false, lastX = 0, lastY = 0;
+            let autoSpin = true;
+
+            function resumeAuto() { setTimeout(() => { autoSpin = true; }, 2000); }
+
+            // Mouse
+            canvas.addEventListener('mousedown', e => {
+                dragging = true; autoSpin = false;
+                lastX = e.clientX; lastY = e.clientY;
+            });
+            window.addEventListener('mousemove', e => {
+                if (!dragging) return;
+                const dx = e.clientX - lastX, dy = e.clientY - lastY;
+                velY = dx * 0.012; velX = dy * 0.012;
+                rotY += velY; rotX += velX;
+                lastX = e.clientX; lastY = e.clientY;
+            });
+            window.addEventListener('mouseup', () => { dragging = false; resumeAuto(); });
+
+            // Touch
+            canvas.addEventListener('touchstart', e => {
+                e.preventDefault(); autoSpin = false;
+                lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+            }, { passive: false });
+            canvas.addEventListener('touchmove', e => {
+                e.preventDefault();
+                const dx = e.touches[0].clientX - lastX;
+                const dy = e.touches[0].clientY - lastY;
+                velY = dx * 0.012; velX = dy * 0.012;
+                rotY += velY; rotX += velX;
+                lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+            }, { passive: false });
+            canvas.addEventListener('touchend', () => resumeAuto());
+
+            function project(x, y, z) {
+                // Y-axis rotation
+                const cy = Math.cos(rotY), sy = Math.sin(rotY);
+                const x1 = x * cy - z * sy, z1 = x * sy + z * cy;
+                // X-axis rotation
+                const cx = Math.cos(rotX), sx = Math.sin(rotX);
+                const y1 = y * cx - z1 * sx, z2 = y * sx + z1 * cx;
+                // Perspective
+                const fov = 380;
+                const s = fov / (fov + z2 + 120);
+                return { sx: W / 2 + x1 * s, sy: H / 2 + y1 * s, s, depth: z2 };
             }
 
             function draw() {
                 ctx.clearRect(0, 0, W, H);
 
-                // Connections
-                conns.forEach(c => {
-                    const a = nodes[c.from], b = nodes[c.to];
+                if (autoSpin) {
+                    rotY += 0.006;
+                } else if (!dragging) {
+                    velX *= 0.92; velY *= 0.92;
+                    rotX += velX; rotY += velY;
+                }
 
-                    // Base line
+                const proj = nodes.map(n => project(n.x, n.y, n.z));
+
+                // Sort connections back-to-front
+                const sortedConns = [...conns].sort((a, b) =>
+                    (proj[a.from].depth + proj[a.to].depth) -
+                    (proj[b.from].depth + proj[b.to].depth)
+                );
+
+                sortedConns.forEach(c => {
+                    const a = proj[c.from], b = proj[c.to];
+                    const depth = (a.depth + b.depth) / 2;
+                    const lineAlpha = Math.max(0.04, 0.18 - depth * 0.0008);
+
                     ctx.beginPath();
-                    ctx.moveTo(a.x, a.y);
-                    ctx.lineTo(b.x, b.y);
-                    ctx.strokeStyle = 'rgba(67,56,202,0.13)';
-                    ctx.lineWidth = 1;
+                    ctx.moveTo(a.sx, a.sy);
+                    ctx.lineTo(b.sx, b.sy);
+                    ctx.strokeStyle = `rgba(67,56,202,${lineAlpha})`;
+                    ctx.lineWidth = 0.9;
                     ctx.stroke();
 
-                    // Pulse dot
                     if (c.active) {
                         c.t += c.speed;
-                        if (c.t >= 1) {
-                            c.t = 0;
-                            c.active = Math.random() > 0.25;
-                        }
-                        const px = a.x + (b.x - a.x) * c.t;
-                        const py = a.y + (b.y - a.y) * c.t;
-                        const alpha = Math.sin(c.t * Math.PI);
+                        if (c.t >= 1) { c.t = 0; c.active = Math.random() > 0.3; }
+                        const px = a.sx + (b.sx - a.sx) * c.t;
+                        const py = a.sy + (b.sy - a.sy) * c.t;
+                        const pa = Math.sin(c.t * Math.PI);
                         ctx.beginPath();
-                        ctx.arc(px, py, 3, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(67,56,202,${0.5 + alpha * 0.5})`;
+                        ctx.arc(px, py, 2.8 * ((a.s + b.s) / 2), 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(67,56,202,${0.45 + pa * 0.55})`;
                         ctx.fill();
                     }
                 });
 
-                // Randomly re-activate a connection
-                if (Math.random() > 0.96) {
+                if (Math.random() > 0.95)
                     conns[Math.floor(Math.random() * conns.length)].active = true;
-                }
 
-                // Nodes
-                nodes.forEach(n => {
-                    n.phase += 0.04;
-                    const r = 5.5 + Math.sin(n.phase) * 1.2;
-                    const alpha = 0.55 + Math.sin(n.phase) * 0.35;
+                // Nodes back-to-front
+                const sortedNodes = nodes.map((n, i) => ({ n, p: proj[i], i }))
+                    .sort((a, b) => a.p.depth - b.p.depth);
 
-                    // Glow
-                    const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 3);
-                    glow.addColorStop(0, `rgba(67,56,202,${alpha * 0.25})`);
+                sortedNodes.forEach(({ n, p }) => {
+                    n.phase += 0.035;
+                    const r = (4.5 + Math.sin(n.phase) * 1) * p.s * 2.2;
+                    const al = 0.5 + Math.sin(n.phase) * 0.3;
+
+                    const glow = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, r * 2.8);
+                    glow.addColorStop(0, `rgba(67,56,202,${al * 0.22})`);
                     glow.addColorStop(1, 'rgba(67,56,202,0)');
                     ctx.beginPath();
-                    ctx.arc(n.x, n.y, r * 3, 0, Math.PI * 2);
-                    ctx.fillStyle = glow;
-                    ctx.fill();
+                    ctx.arc(p.sx, p.sy, r * 2.8, 0, Math.PI * 2);
+                    ctx.fillStyle = glow; ctx.fill();
 
-                    // Node circle
                     ctx.beginPath();
-                    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(67,56,202,${alpha})`;
-                    ctx.fill();
+                    ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(67,56,202,${al})`; ctx.fill();
 
-                    // White inner dot
                     ctx.beginPath();
-                    ctx.arc(n.x, n.y, r * 0.38, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-                    ctx.fill();
+                    ctx.arc(p.sx, p.sy, r * 0.36, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255,255,255,0.88)'; ctx.fill();
                 });
 
                 requestAnimationFrame(draw);
