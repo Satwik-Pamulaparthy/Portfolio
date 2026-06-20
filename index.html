@@ -654,41 +654,128 @@
         .section.in .contact-lead { animation: fadeRight .5s ease .18s both; }
         .section.in .form-wrap    { animation: fadeLeft  .5s ease .3s both; }
 
-        /* ── Responsive ── */
-        @media (max-width: 900px) {
-            .hero-inner { grid-template-columns: 1fr; }
-            .hero-neural { justify-content: center; margin-top: 2rem; }
-            #heroCanvas { width: 320px; height: 320px; }
-            .about-grid { grid-template-columns: 1fr; }
-            .about-photo { margin: 0 auto; }
-            .contact-grid { grid-template-columns: 1fr; }
+        /* ── Liquid Glass Drag Spotlight ── */
+        .nav-spotlight {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 36px;
+            width: 60px;
+            border-radius: 10px;
+            background: rgba(190,194,255,0.13);
+            border: 1px solid rgba(190,194,255,0.28);
+            box-shadow: 0 2px 20px rgba(94,107,255,0.22), inset 0 1px 0 rgba(255,255,255,0.18);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-50%) translateX(0px);
+            will-change: transform, opacity;
+            transition: opacity 0.25s ease, width 0.1s ease;
+            backdrop-filter: blur(8px);
         }
 
+        /* ── Responsive ── */
+
+        /* Tablet landscape */
+        @media (max-width: 1024px) {
+            .section { padding: 4rem 1.75rem; }
+            .div { margin: 0 1.75rem; }
+            .hero { padding: 5.5rem 1.75rem 3rem; }
+        }
+
+        /* Tablet portrait */
+        @media (max-width: 900px) {
+            .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero-neural { justify-content: center; }
+            #heroCanvas { width: 300px; height: 300px; }
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .about-photo { margin: 0 auto; width: 220px; height: 220px; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .section { padding: 3.5rem 1.5rem; }
+            .div { margin: 0 1.5rem; }
+            .hero { padding: 5rem 1.5rem 3rem; }
+        }
+
+        /* Mobile — replace hamburger with inline scrollable tabs */
         @media (max-width: 768px) {
-            nav { width: calc(100% - 28px); top: 10px; border-radius: 14px; }
-            .nav-resume { display: none; }
-            .nav-list {
-                display: none; position: absolute; top: calc(100% + 8px); right: 0;
-                background: rgba(13,14,15,0.88);
-                backdrop-filter: blur(40px) saturate(180%);
-                -webkit-backdrop-filter: blur(40px) saturate(180%);
-                border: 1px solid rgba(255,255,255,0.1);
+            nav {
+                width: calc(100% - 24px);
+                top: 10px;
                 border-radius: 14px;
-                box-shadow: 0 12px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
-                padding: 0.75rem 0.75rem; flex-direction: column; gap: 0.25rem;
-                min-width: 155px;
+                height: 50px;
+                padding: 0 0.85rem;
             }
-            .nav-list.open { display: flex; }
-            .nav-toggle { display: flex; align-items: center; justify-content: center; }
+            .nav-toggle  { display: none !important; }
+            .nav-resume  { display: none; }
+            .logo-name   { display: none; }
+            .nav-list {
+                display: flex !important;
+                flex-direction: row !important;
+                position: static !important;
+                background: none !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                gap: 0 !important;
+                overflow-x: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-list::-webkit-scrollbar { display: none; }
+            .nav-list a {
+                font-size: 0.72rem;
+                padding: 0.28rem 0.52rem;
+                white-space: nowrap;
+                border-radius: 8px;
+            }
             .orbit-card { width: 260px; margin-left: -130px; }
+            .orbit-scene { height: 500px; }
+            .skills-orbit .orbit-scene { height: 440px; }
+            .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+            .section { padding: 3rem 1.25rem; }
+            .div { margin: 0 1.25rem; }
+            .hero { padding: 4.5rem 1.25rem 2.5rem; }
+        }
+
+        /* Small phones (iPhone 14 / 15 standard ~390px) */
+        @media (max-width: 480px) {
+            nav { width: calc(100% - 16px); top: 8px; border-radius: 12px; height: 46px; }
+            .nav-list a { font-size: 0.68rem; padding: 0.25rem 0.42rem; }
+            .hero h1 { font-size: clamp(1.75rem, 9vw, 2.4rem); letter-spacing: -0.04em; }
+            .hero-sub { font-size: 0.84rem; line-height: 1.72; }
+            .hero-badge { font-size: 0.6rem; letter-spacing: 0.04em; padding: 0.25rem 0.55rem; }
+            .hero-meta { display: none; }
+            #heroCanvas { width: 260px; height: 260px; }
+            .clinks { grid-template-columns: repeat(2, 1fr); }
+            .section { padding: 2.5rem 1rem; }
+            .div { margin: 0 1rem; }
+            .section-title { font-size: 1.6rem; }
+            .orbit-card { width: 240px; margin-left: -120px; }
             .orbit-scene { height: 480px; }
             .skills-orbit .orbit-scene { height: 420px; }
-            .footer-inner { flex-direction: column; align-items: flex-start; }
+            .tl { padding: 1.15rem 1.1rem; }
+            .pub { padding: 1.4rem; }
+            .pub h3 { font-size: 1.05rem; }
+            .form-wrap { padding: 1.4rem; }
+            .footer-status { display: none; }
         }
 
-        @media (max-width: 520px) {
-            .hero h1 { font-size: 2rem; }
-            .clinks { grid-template-columns: repeat(2, 1fr); }
+        /* iPhone SE / very small (≤375px) */
+        @media (max-width: 375px) {
+            .hero h1 { font-size: 1.6rem; }
+            .hero-badge { font-size: 0.56rem; padding: 0.22rem 0.45rem; }
+            .nav-list a { font-size: 0.62rem; padding: 0.22rem 0.35rem; }
+            .orbit-card { width: 220px; margin-left: -110px; }
+            .section-title { font-size: 1.45rem; }
+            .section { padding: 2rem 0.85rem; }
+            .div { margin: 0 0.85rem; }
+        }
+
+        /* iPad Pro landscape (1024px+) — already handled above */
+        /* iPad Pro portrait (1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+            .nav-list a { font-size: 0.78rem; }
         }
     </style>
 </head>
@@ -1480,6 +1567,148 @@
             fstatus.classList.add('show');
             setTimeout(() => fstatus.classList.remove('show'), 4000);
         });
+
+        // ── Liquid Glass Spring Nav — touch drag ──────────────────────────────
+        (function () {
+            const nav      = document.querySelector('nav');
+            const navListEl = document.getElementById('navList');
+            const links    = Array.from(navListEl.querySelectorAll('a'));
+
+            // Inject spotlight element inside nav
+            const spotlight = document.createElement('div');
+            spotlight.className = 'nav-spotlight';
+            nav.appendChild(spotlight);
+
+            const STIFFNESS = 0.26;
+            const DAMPING   = 0.70;
+
+            let isDragging   = false;
+            let longPressTimer = null;
+            let springX      = 0;
+            let springVel    = 0;
+            let targetX      = 0;
+            let targetW      = 60;
+            let currentIdx   = -1;
+            let rafId        = null;
+            let touchStartX  = 0;
+            let touchStartY  = 0;
+
+            function getLinkRects() {
+                const navRect = nav.getBoundingClientRect();
+                return links.map(l => {
+                    const r = l.getBoundingClientRect();
+                    return { left: r.left - navRect.left, center: r.left - navRect.left + r.width / 2, width: r.width };
+                });
+            }
+
+            function closestIdx(clientX) {
+                const navRect = nav.getBoundingClientRect();
+                const x = clientX - navRect.left;
+                let best = 0, bestDist = Infinity;
+                getLinkRects().forEach((r, i) => {
+                    const d = Math.abs(x - r.center);
+                    if (d < bestDist) { bestDist = d; best = i; }
+                });
+                return best;
+            }
+
+            function highlightIdx(idx) {
+                if (idx === currentIdx) return;
+                currentIdx = idx;
+                const rects = getLinkRects();
+                const r = rects[idx];
+                targetX = r.center;
+                targetW = r.width + 18;
+                spotlight.style.width = targetW + 'px';
+                if (navigator.vibrate) navigator.vibrate(6);
+                // Springy scale: focused item grows, neighbors shrink
+                links.forEach((link, i) => {
+                    const dist = Math.abs(i - idx);
+                    const scale = dist === 0 ? 1.14 : dist === 1 ? 0.95 : 1;
+                    link.style.transition = 'transform 0.22s cubic-bezier(.34,1.56,.64,1), color .15s';
+                    link.style.transform  = `scale(${scale})`;
+                    link.style.color      = dist === 0 ? 'var(--text)' : '';
+                });
+                kickSpring();
+            }
+
+            function kickSpring() {
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(springTick);
+            }
+
+            function springTick() {
+                const dx  = targetX - springX;
+                springVel = springVel * DAMPING + dx * STIFFNESS;
+                springX  += springVel;
+                spotlight.style.transform = `translateY(-50%) translateX(${(springX - targetW / 2).toFixed(2)}px)`;
+                if (Math.abs(dx) > 0.25 || Math.abs(springVel) > 0.25) {
+                    rafId = requestAnimationFrame(springTick);
+                } else {
+                    springX = targetX;
+                    spotlight.style.transform = `translateY(-50%) translateX(${(springX - targetW / 2).toFixed(2)}px)`;
+                }
+            }
+
+            function release() {
+                isDragging = false;
+                spotlight.style.opacity = '0';
+                links.forEach(l => {
+                    l.style.transition = 'transform 0.3s cubic-bezier(.34,1.56,.64,1), color .22s';
+                    l.style.transform  = '';
+                    l.style.color      = '';
+                });
+                setTimeout(() => links.forEach(l => { l.style.transition = ''; }), 320);
+                currentIdx = -1;
+            }
+
+            nav.addEventListener('touchstart', e => {
+                const t = e.touches[0];
+                touchStartX = t.clientX;
+                touchStartY = t.clientY;
+
+                longPressTimer = setTimeout(() => {
+                    isDragging = true;
+                    const idx = closestIdx(t.clientX);
+                    const r   = getLinkRects()[idx];
+                    // Initialise spring at current link position (no jump)
+                    springX  = r.center;
+                    targetX  = r.center;
+                    targetW  = r.width + 18;
+                    spotlight.style.width     = targetW + 'px';
+                    spotlight.style.transform = `translateY(-50%) translateX(${(springX - targetW / 2).toFixed(2)}px)`;
+                    spotlight.style.opacity   = '1';
+                    currentIdx = -1;
+                    highlightIdx(idx);
+                    if (navigator.vibrate) navigator.vibrate([8, 30, 8]);
+                }, 340);
+            }, { passive: true });
+
+            nav.addEventListener('touchmove', e => {
+                const t = e.touches[0];
+                // Cancel long-press if user scrolls before it fires
+                if (!isDragging) {
+                    if (Math.abs(t.clientX - touchStartX) > 8 || Math.abs(t.clientY - touchStartY) > 8) {
+                        clearTimeout(longPressTimer);
+                    }
+                    return;
+                }
+                e.preventDefault();
+                highlightIdx(closestIdx(t.clientX));
+            }, { passive: false });
+
+            nav.addEventListener('touchend', () => {
+                clearTimeout(longPressTimer);
+                if (!isDragging) return;
+                if (currentIdx >= 0) links[currentIdx].click();
+                release();
+            }, { passive: true });
+
+            nav.addEventListener('touchcancel', () => {
+                clearTimeout(longPressTimer);
+                if (isDragging) release();
+            }, { passive: true });
+        })();
     </script>
 </body>
 </html>
