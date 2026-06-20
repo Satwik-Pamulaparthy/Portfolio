@@ -57,23 +57,47 @@
             display: flex; align-items: center;
             padding: 0 1.4rem;
             border-radius: 18px;
-            background: rgba(255,255,255,0.04);
-            backdrop-filter: blur(48px) saturate(180%) brightness(1.08);
-            -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(1.08);
-            border: 1px solid rgba(255,255,255,0.1);
+            /* Layered glass: outer 15% fill + inner rect pseudo-layer */
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(48px) saturate(200%) brightness(1.06);
+            -webkit-backdrop-filter: blur(48px) saturate(200%) brightness(1.06);
+            border: 1px solid rgba(255,255,255,0.18);
             box-shadow:
                 0 8px 40px rgba(0,0,0,0.55),
-                0 1px 0 rgba(255,255,255,0.08) inset,
-                0 -1px 0 rgba(0,0,0,0.25) inset;
-            transition: box-shadow .35s ease, background .35s ease;
+                /* light inner top highlight */
+                inset 0 1.5px 0 rgba(255,255,255,0.22),
+                /* dark inner bottom shadow */
+                inset 0 -1px 0 rgba(0,0,0,0.28),
+                /* subtle side rim */
+                inset 1px 0 0 rgba(255,255,255,0.06),
+                inset -1px 0 0 rgba(255,255,255,0.06);
+            transition: box-shadow .5s cubic-bezier(0.34,1.56,0.64,1),
+                        background .5s cubic-bezier(0.34,1.56,0.64,1);
+            overflow: hidden;
         }
 
+        /* Inner layered glass rectangle (15% → 8% stacked effect) */
+        nav::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav > * { position: relative; z-index: 1; }
+
         nav:hover {
-            background: rgba(255,255,255,0.055);
+            background: rgba(255,255,255,0.18);
             box-shadow:
                 0 12px 50px rgba(0,0,0,0.6),
-                0 1px 0 rgba(255,255,255,0.1) inset,
-                0 -1px 0 rgba(0,0,0,0.25) inset;
+                inset 0 1.5px 0 rgba(255,255,255,0.28),
+                inset 0 -1px 0 rgba(0,0,0,0.28),
+                inset 1px 0 0 rgba(255,255,255,0.08),
+                inset -1px 0 0 rgba(255,255,255,0.08);
         }
 
         .nav-inner {
@@ -111,7 +135,11 @@
             padding: 0.38rem 0.8rem;
             border-radius: 10px;
             border: 1px solid transparent;
-            transition: color .22s, background .22s, border-color .22s, box-shadow .22s;
+            transition: color .35s cubic-bezier(0.34,1.56,0.64,1),
+                        background .35s cubic-bezier(0.34,1.56,0.64,1),
+                        border-color .35s cubic-bezier(0.34,1.56,0.64,1),
+                        box-shadow .35s cubic-bezier(0.34,1.56,0.64,1),
+                        transform .5s cubic-bezier(0.34,1.56,0.64,1);
             position: relative;
         }
 
@@ -171,6 +199,11 @@
             width: 100%; max-width: 1400px; margin: 0 auto;
             display: grid; grid-template-columns: 1fr auto;
             gap: 4rem; align-items: center; position: relative; z-index: 1;
+            min-width: 0;
+        }
+
+        .hero-content {
+            min-width: 0; /* prevents grid blowout */
         }
 
         .hero-badge {
@@ -182,8 +215,9 @@
             color: var(--primary); font-size: 0.7rem; font-weight: 600;
             margin-bottom: 1.4rem;
             font-family: 'Inter', monospace;
-            letter-spacing: 0.07em; text-transform: uppercase;
+            letter-spacing: 0.06em; text-transform: uppercase;
             animation: up .8s ease .2s backwards;
+            max-width: 100%; white-space: normal; word-break: break-word;
         }
 
         .pulse {
@@ -207,17 +241,18 @@
 
         .hero h1 {
             font-family: 'Manrope', sans-serif;
-            font-size: clamp(2.4rem, 5.5vw, 4rem);
-            font-weight: 800; line-height: 1.1;
-            letter-spacing: -0.05em; margin-bottom: 1.15rem;
+            font-size: clamp(2rem, 5.5vw, 4rem);
+            font-weight: 800; line-height: 1.12;
+            letter-spacing: -0.04em; margin-bottom: 1.15rem;
             animation: up .8s ease .4s backwards;
-            color: var(--text);
+            color: var(--text); word-break: break-word;
         }
 
         .hero-sub {
             font-size: 0.92rem; color: var(--muted); font-weight: 400;
-            max-width: 500px; margin-bottom: 1.75rem; line-height: 1.8;
+            max-width: 100%; margin-bottom: 1.75rem; line-height: 1.8;
             animation: up .8s ease .55s backwards;
+            word-wrap: break-word; overflow-wrap: break-word;
         }
 
         .hero-cta {
@@ -234,7 +269,7 @@
         .hero-neural::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-top: 1px solid var(--subtle); border-left: 1px solid var(--subtle); }
         .hero-neural::after  { content: ''; position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-bottom: 1px solid var(--subtle); border-right: 1px solid var(--subtle); }
 
-        #heroCanvas { display: block; width: 480px; height: 480px; }
+        #heroCanvas { display: block; width: 480px; height: 480px; max-width: 100%; }
 
         /* ── Buttons ── */
         .btn {
@@ -662,15 +697,31 @@
             height: 36px;
             width: 60px;
             border-radius: 10px;
-            background: rgba(190,194,255,0.13);
-            border: 1px solid rgba(190,194,255,0.28);
-            box-shadow: 0 2px 20px rgba(94,107,255,0.22), inset 0 1px 0 rgba(255,255,255,0.18);
+            /* Layered glass spotlight: 15% fill + inner rect */
+            background: rgba(190,194,255,0.15);
+            border: 1px solid rgba(190,194,255,0.32);
+            box-shadow:
+                0 2px 20px rgba(94,107,255,0.28),
+                inset 0 1.5px 0 rgba(255,255,255,0.28),
+                inset 0 -1px 0 rgba(0,0,0,0.12);
             opacity: 0;
             pointer-events: none;
             transform: translateY(-50%) translateX(0px);
             will-change: transform, opacity;
-            transition: opacity 0.25s ease, width 0.1s ease;
-            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease, width 0.15s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            overflow: hidden;
+        }
+
+        .nav-spotlight::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 8px;
+            background: rgba(190,194,255,0.08);
+            border: 1px solid rgba(190,194,255,0.15);
+            pointer-events: none;
         }
 
         /* ── Responsive ── */
@@ -686,7 +737,7 @@
         @media (max-width: 900px) {
             .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
             .hero-neural { justify-content: center; }
-            #heroCanvas { width: 300px; height: 300px; }
+            #heroCanvas { width: min(300px, 80vw); height: min(300px, 80vw); }
             .about-grid { grid-template-columns: 1fr; gap: 2rem; }
             .about-photo { margin: 0 auto; width: 220px; height: 220px; }
             .contact-grid { grid-template-columns: 1fr; }
@@ -742,10 +793,12 @@
             nav { width: calc(100% - 16px); top: 8px; border-radius: 12px; height: 46px; }
             .nav-list a { font-size: 0.68rem; padding: 0.25rem 0.42rem; }
             .hero h1 { font-size: clamp(1.75rem, 9vw, 2.4rem); letter-spacing: -0.04em; }
-            .hero-sub { font-size: 0.84rem; line-height: 1.72; }
+            .hero-sub { font-size: 0.84rem; line-height: 1.72; max-width: 100%; }
             .hero-badge { font-size: 0.6rem; letter-spacing: 0.04em; padding: 0.25rem 0.55rem; }
             .hero-meta { display: none; }
-            #heroCanvas { width: 260px; height: 260px; }
+            /* Hide canvas on small phones — hero goes full-width text only */
+            .hero-neural { display: none; }
+            #heroCanvas { display: none; }
             .clinks { grid-template-columns: repeat(2, 1fr); }
             .section { padding: 2.5rem 1rem; }
             .div { margin: 0 1rem; }
@@ -814,7 +867,7 @@
                 <div class="hero-meta">/* Profile · 2026 */</div>
                 <h1>Hi, I'm<br>Satwik Pamulaparthy</h1>
                 <p class="hero-sub">
-                    Leveraging data analysis and machine learning to extract actionable insights from complex data.<br>
+                    Leveraging data analysis and machine learning to extract actionable insights from complex data.
                     MS CS, University of Illinois Chicago | May 2026
                 </p>
                 <div class="hero-cta">
@@ -1579,8 +1632,9 @@
             spotlight.className = 'nav-spotlight';
             nav.appendChild(spotlight);
 
-            const STIFFNESS = 0.26;
-            const DAMPING   = 0.70;
+            /* Slower elastic spring ~1800ms settle time */
+            const STIFFNESS = 0.06;
+            const DAMPING   = 0.62;
 
             let isDragging   = false;
             let longPressTimer = null;
@@ -1625,7 +1679,7 @@
                 links.forEach((link, i) => {
                     const dist = Math.abs(i - idx);
                     const scale = dist === 0 ? 1.14 : dist === 1 ? 0.95 : 1;
-                    link.style.transition = 'transform 0.22s cubic-bezier(.34,1.56,.64,1), color .15s';
+                    link.style.transition = 'transform 0.6s cubic-bezier(.34,1.56,.64,1), color .22s';
                     link.style.transform  = `scale(${scale})`;
                     link.style.color      = dist === 0 ? 'var(--text)' : '';
                 });
@@ -1654,11 +1708,11 @@
                 isDragging = false;
                 spotlight.style.opacity = '0';
                 links.forEach(l => {
-                    l.style.transition = 'transform 0.3s cubic-bezier(.34,1.56,.64,1), color .22s';
+                    l.style.transition = 'transform 0.7s cubic-bezier(.34,1.56,.64,1), color .3s';
                     l.style.transform  = '';
                     l.style.color      = '';
                 });
-                setTimeout(() => links.forEach(l => { l.style.transition = ''; }), 320);
+                setTimeout(() => links.forEach(l => { l.style.transition = ''; }), 750);
                 currentIdx = -1;
             }
 
